@@ -1,0 +1,39 @@
+{
+    // =============================================================================================
+    // #region Code formatters
+
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    // #endregion
+
+    // =============================================================================================
+    // #region Syntax coloring personalization
+
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "comment.block.documentation",
+                    "punctuation.definition.comment.begin.documentation",
+                    "punctuation.definition.comment.end.documentation"
+                ],
+                "settings": {
+                    "foreground": "#537268"
+                }
+            }
+        ]
+    },
+
+    // #endregion
+}
