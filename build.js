@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.1
+ * decimal.js-i18n v0.2.2
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -40,7 +40,7 @@ const headers = {
     base: '/// <reference path="./index.d.ts" />\n',
     bundle: '/// <reference path="./decimal-i18n.d.ts" />\n',
     extend: '/// <reference path="./extend.d.ts" />\n',
-    license: "/*\n * decimal.js-i18n v0.2.1\n * Full internationalization support for decimal.js.\n * MIT License\n * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n * https://github.com/pjbatista/decimal.js-i18n\n */\n", // prettier-ignore
+    license: "/*\n * decimal.js-i18n v0.2.2\n * Full internationalization support for decimal.js.\n * MIT License\n * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n * https://github.com/pjbatista/decimal.js-i18n\n */\n", // prettier-ignore
     strict: '"use strict";\n',
 };
 
@@ -104,7 +104,7 @@ const postProcess = {
     suffix: "\nexport { Decimal };\nexport default Decimal;\n",
     prefix: 'import Format from "./format/index";\nimport Decimal from "decimal.js";\n',
     exportRegex: () => /export \{ default as Decimal, default \} from 'decimal.js';\n/,
-    licenseRegex: () => /\/\*\n\s+\* decimal.js-i18n v0.2.1\n\s+\* Full internationalization support for decimal\.js\.\n\s+\* MIT License\n\s+\* Copyright \(c\) 2022 Pedro José Batista <pedrobatista@myself\.com>\n\s+\* https:\/\/github.com\/pjbatista\/decimal\.js-i18n\n\s+\*\//gms, // prettier-ignore
+    licenseRegex: () => /\/\*\n\s+\* decimal.js-i18n v0.2.2\n\s+\* Full internationalization support for decimal\.js\.\n\s+\* MIT License\n\s+\* Copyright \(c\) 2022 Pedro José Batista <pedrobatista@myself\.com>\n\s+\* https:\/\/github.com\/pjbatista\/decimal\.js-i18n\n\s+\*\//gms, // prettier-ignore
     mainRegex: () => /globalThis\.__Decimal__Class__Global__ \?\? require\("decimal\.js"\)/ms,
     sectionsRegex: () => /\/\*\*@section code\*\/(.*?)\/\*\*@section ignore\*\//ms,
 };

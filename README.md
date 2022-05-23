@@ -1,4 +1,4 @@
-# ![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg)
+# [![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg)](https://github.com/pjbatista/decimal.js-i18n)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
@@ -96,13 +96,13 @@ const formatter = new Decimal.Format("lao", {
 
 Decimal.set({ precision: 100 });
 
-console.log(formatter.format(-1 / 3));
+formatter.format(-1 / 3);
 // Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐
 
-formatter.format(new Decimal(1).div(3));
+formatter.format(new Decimal(-1).div(3));
 // Returns: US$-໐,໐໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
 
-console.log(formatter.format(new Decimal("1.65e51").div(3).cbrt()));
+formatter.format(new Decimal("1.65e51").div(3).cbrt());
 // Returns US$໘໑.໙໓໒.໑໒໗.໐໖໐.໐໖໔.໕໘໐,໐໙໓໗໙໕໐໗໑໒໘໖໒໘໕໗໙໙໗໓໓໓໙໑໐໓໓໘໗໐໔໕໔
 ```
 
@@ -265,9 +265,12 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ## Changelog
 
-### v0.2.1 (2022-05-23)
+### v0.2.3 (2022-05-23)
 
-Simple fix to the published package.
+Fixes to the documentation and examples.
+
+- Adapted package in `builder.js`.
+- Better `logo.svg` background color.
 
 ### v0.2.0 (2022-05-23)
 
