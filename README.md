@@ -1,17 +1,20 @@
+# ![decimal.js-i18n](logo.svg)
+
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
-- 🌎 Supports all languages, numbering systems, currencies and units of JavaScript's [Intl](https://mdn.io/Intl)
+- 🌎 Supports all languages, numbering systems, currencies and units of JavaScript's [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 - 🤖 Automatic extension of the `Decimal` class (custom extender available)
-- 🌞 Expands upon [Intl.NumberFormat](https://mdn.io/Intl.NumberFormat), pushing it to the limits of `decimal.js`
+- 🌞 Expands upon [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.NumberFormat), pushing it to the limits of `decimal.js`
 - 🎯 Precision, minimum integer digits, and significance of up to <u>**one billion**</u>!
 
-## Contents
+## Summary
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Parameters](#parameters)
 - [Options](#options)
 - [Links](#links)
+- [Changelog](#changelog)
 - [Disclaimer and License](#disclaimer-and-license)
 
 ## Installation
@@ -81,7 +84,7 @@ largeDecimal.toLocaleString('ar', { maximumFractionDigits: 50 });
 // Returns: ٣٩٬٣٣٤٬٤١٥٬٩٤٦٬٧٣٧٬١٠٥٫٤٢٢٢٩٨٤٩٦٩٦٣٩٧٠٩١٥٦٨٢٩٣٩٩٢٠٠١٥٤٦٤٦٥٥١٤٤٨٨٨١٣٦٢٣٤٥٢
 ```
 
-The backbone of the module, however is the `Decimal.Format` class — to be used when translating multiple values for an increase in performance  —  which behaves exactly like [Intl.NumberFormat](https://mdn.io/Intl.NumberFormat), without its 20/21 digits limitations:
+The backbone of the module, however is the `Decimal.Format` class — to be used when translating multiple values for an increase in performance  —  which behaves exactly like [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.NumberFormat), without its 20/21 digits limitations:
 
 ```javascript
 const formatter = new Decimal.Format("lao", {
@@ -91,21 +94,28 @@ const formatter = new Decimal.Format("lao", {
     style: "currency",
 });
 
-formatter.format(-1 / 3);
+Decimal.set({ precision: 100 });
+
+console.log(formatter.format(-1 / 3));
 // Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐
 
 formatter.format(new Decimal(1).div(3));
-// Returns: US$໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
+// Returns: US$-໐,໐໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
 
-formatter.format(new Decimal(1e101).div(3).cbrt());
-// Returns US$໓.໒໑໘.໒໙໗.໙໔໘.໖໘໕.໔໓໒.໕໒໖.໑໙໙.໗໗໕.໙໔໘.໑໑໖.໘໘໙,໗໒໕໓໗໕໙໖໔໙໔໑໓໖໙໑໐໘໓໑໘໔໘໒໘໓໙໕໑໐໗໙໔
+console.log(formatter.format(new Decimal("1.65e51").div(3).cbrt()));
+// Returns US$໘໑.໙໓໒.໑໒໗.໐໖໐.໐໖໔.໕໘໐,໐໙໓໗໙໕໐໗໑໒໘໖໒໘໕໗໙໙໗໓໓໓໙໑໐໓໓໘໗໐໔໕໔
 ```
 
 Formatting to descriptive parts is also fully implemented:
 
 ```javascript
-formatter.formatToParts(Infinity);
-// Returns: [{ type: 'currency', value: 'US$' }, { type: 'infinity', value: '∞' }]
+formatter.formatToParts(Decimal.acos(-1));
+// Returns: [
+//  { type: 'currency', value: 'US$' },
+//  { type: 'integer', value: '໓' },
+//  { type: 'decimal', value: ',' },
+//  { type: 'fraction', value: '໐໑໔໑໕໙໒໖໕໓໕໘໙໗໙໓໒໓໘໔໖໒໖໔໓໓໘໓໒໗໙໕໐' },
+// ]
 ```
 
 [<sub>⇧ back to top</sub>](#contents)
@@ -116,7 +126,7 @@ The constructor for `Decimal.Format` and `Decimal.prototype.toLocaleString` are 
 
 **locales**: `string` | `string[]`
 
-<sup>(optional)</sup> A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the locales argument, see the [Intl](https://mdn.io/Intl) page. The system default locale is used when omitted.
+<sup>(optional)</sup> A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the locales argument, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page. The system default locale is used when omitted.
 
 **options**: `object`
 
@@ -149,7 +159,7 @@ In many locales, accounting format means to wrap the number with parentheses ins
 
 #### localeMatcher › "`best fit`" | "`lookup`"
 
-The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is "`best fit`". For information about this option, see the [Intl](https://mdn.io/Intl) page.
+The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is "`best fit`". For information about this option, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page.
 
 #### notation › "`standard`" | "`scientific`" | "`engineering`" | "`compact`"
 
@@ -164,7 +174,7 @@ The formatting that should be displayed for the number, the defaults is "`standa
 
 A numeral system is a system for expressing numbers. The numberingSystem property helps to represent the different numeral systems used by various countries, regions, and cultures around the world.
 
-See [https://mdn.io/Intl.Locale.prototype.numberingSystem](https://mdn.io/Intl.Locale.prototype.numberingSystem) for more information.
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.Locale.prototype.numberingSystem](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.Locale.prototype.numberingSystem) for more information.
 
 #### rounding › [`Decimal.Rounding`](https://mikemcl.github.io/decimal.js/#modes)
 
@@ -223,23 +233,23 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 #### maximumFractionDigits › `number`
 
-1️⃣ The maximum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number formatting is the larger of [minimumFractionDigits](#minimumFractionDigits) and 3; the default for currency formatting is the larger of `minimumFractionDigits` and the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information); the default for percent formatting is the larger of `minimumFractionDigits` and 0.
+¹ The maximum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number formatting is the larger of [minimumFractionDigits](#minimumFractionDigits) and 3; the default for currency formatting is the larger of `minimumFractionDigits` and the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information); the default for percent formatting is the larger of `minimumFractionDigits` and 0.
 
 #### minimumFractionDigits › `number`
 
-1️⃣ The minimum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number and percent formatting is 0; the default for currency formatting is the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information).
+¹ The minimum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number and percent formatting is 0; the default for currency formatting is the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information).
 
 #### minimumIntegerDigits › `number`
 
-1️⃣ The minimum number of integer digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
+¹ The minimum number of integer digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
 
 #### maximumSignificantDigits › `number`
 
-2️⃣ The maximum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 21.
+² The maximum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 21.
 
 #### minimumSignificantDigits › `number`
 
-2️⃣ The minimum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
+² The minimum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
 
 [<sub>⇧ back to top</sub>](#contents)
 
@@ -250,6 +260,26 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 - [Intl on MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 - [Intl on W3C Web Docs](https://docs.w3cub.com/javascript/global_objects/intl)
 - [ECMAScript Internationalization API Specification](https://tc39.es/ecma402)
+
+[<sub>⇧ back to top</sub>](#contents)
+
+## Changelog
+
+### v0.2.0 (2022-05-23)
+
+TypeScript codebase rewrite.
+
+- Add extensive randomized testing.
+- Fix many bugs related to `notation` and `style`.
+- Better type declarations.
+
+### v0.1.0 (2022-05-18)
+
+First version
+
+- Code base and unit tests created.
+- To be replicated in more environments.
+- To be published after thorough testing.
 
 [<sub>⇧ back to top</sub>](#contents)
 

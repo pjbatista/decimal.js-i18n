@@ -11,6 +11,9 @@
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -18,7 +21,7 @@
     // #endregion
 
     // =============================================================================================
-    // #region Syntax coloring personalization
+    // #region (T/J)SDoc comments
 
     "editor.tokenColorCustomizations": {
         "textMateRules": [
@@ -33,6 +36,17 @@
                 }
             }
         ]
+    },
+
+    // #endregion
+
+    // =============================================================================================
+    // #region Window color
+
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#344234",
+        "titleBar.activeBackground": "#344234",
+        "titleBar.activeForeground": "#FEFBFB"
     },
 
     // #endregion

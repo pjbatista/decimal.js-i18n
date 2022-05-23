@@ -1,110 +1,439 @@
 /*
- * decimal.js-i18n v0.1.0
+ * decimal.js-i18n v0.1.1
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
  * https://github.com/pjbatista/decimal.js-i18n
  */
-const { existsSync } = require("fs");
-const { copyFile, mkdir, readFile, rm, writeFile } = require("fs/promises");
+"use strict";
+
+// Build routines for decimal-i18n:
+//  -> Transpile a 'local' version to be used for the node package, via `tsc`
+//  -> Create the bundled AMD, CommonJS, and UML distributions
+//  -> Copy assets and create files for publishing
+
+//#region Imports ------------------------------------------------------------------------------------------------------
+
+const { existsSync, rm, writeFile, mkdir, readFile, copyFile } = require("fs-extra");
 const { join } = require("path");
 const eslint = require("prettier-eslint");
-const { minify } = require("uglify-js");
+const { rollup } = require("rollup");
+const { convertCompilerOptionsFromJson, createProgram } = require("typescript");
+const { minify: uglifyJs } = require("uglify-js");
+const tsconfig = require("./tsconfig.json");
 const nodePackage = require("./package.json");
 
-const DIST = "./dist";
-const EXT_OUT = "extend";
-const NAME = "decimal.js-i18n";
-const MOD_OUT = "index";
-const ROOT = "https://github.com/pjbatista/decimal.js-i18n/blob/master/source.js";
-const SOURCE = "index.js";
-const TEMP = join(__dirname, "/temp.js");
-const ZIP_OUT = "decimal-i18n";
+// ESMs are imported asynchronously on the main task
+let chalk;
+let cjsPlugin;
+let dtsPlugin;
+let nodePlugin;
+let sourcemapsPlugin;
 
-/* eslint-disable max-len,quotes */
-const template = {
-    head: `/// <reference path="${MOD_OUT}.d.ts" />\n`,
-    module: [
-        '/*\n* decimal.js-i18n v0.1.0\n* Full internationalization support for decimal.js.\n* MIT License\n* Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n* https://github.com/pjbatista/decimal.js-i18n\n*/\n"use strict";\nimport Decimal from "decimal.js";\n',
-        "export default Decimal;\nexport { Decimal };\n",
-    ],
-    normal: [
-        '!(function (globalScope) {\n    /*\n     * decimal.js-i18n v0.1.0\n     * Full internationalization support for decimal.js.\n     * MIT License\n     * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n     * https://github.com/pjbatista/decimal.js-i18n\n     */\n    "use strict";\n    let Decimal;\n\n    if (typeof globalScope.Decimal === "function") {\n        Decimal = globalScope.Decimal;\n    } else if (typeof define === "function" && define.amd) {\n        define(["decimal.js"], D => (Decimal = D));\n    } else if (typeof module !== "undefined" && module.exports) {\n        Decimal = require("decimal.js");\n        module.exports = Decimal;\n    }\n\n    if (typeof Decimal !== "function") {\n        throw new TypeError("Could not find type `Decimal` and/or module `decimal.js`.");\n    }\n',
-        "})(this);\n",
-    ],
+//#endregion
+
+//#region Constants ----------------------------------------------------------------------------------------------------
+
+// These go on top of files
+const headers = {
+    amd: 'require("decimal.js", Decimal =>',
+    base: '/// <reference path="./index.d.ts" />\n',
+    bundle: '/// <reference path="./decimal-i18n.d.ts" />\n',
+    extend: '/// <reference path="./extend.d.ts" />\n',
+    license: "/*\n * decimal.js-i18n v0.1.1\n * Full internationalization support for decimal.js.\n * MIT License\n * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n * https://github.com/pjbatista/decimal.js-i18n\n */\n", // prettier-ignore
+    strict: '"use strict";\n',
 };
-/* eslint-enable max-len,quotes */
+
+// Names used for modules, bundling and whatnot
+const names = {
+    bundle: "decimal-i18n",
+    long: "decimal.js-i18n",
+    node: "index",
+    rootLocal: ["./src/index.ts"],
+    rootNode: ["./src/index.ts", "./src/extend.ts"],
+};
+
+// Project directories
+const paths = {
+    bundle: join(__dirname, "dist", "bundle"),
+    docs: join(__dirname, "docs"),
+    dist: join(__dirname, "dist"),
+    local: join(__dirname, "dist", ".localbuild"),
+    node: join(__dirname, "dist", ".nodebuild"),
+    package: join(__dirname, "dist", "node"),
+    root: __dirname,
+    source: join(__dirname, "src"),
+};
+
+const tempFile = join(paths.source, "/temp.js");
+
+//#endregion
+
+//#region Helpers ------------------------------------------------------------------------------------------------------
 
 const doubleFormat = async text => await format(await format(text));
-const format = async text => await eslint({ filePath: TEMP, text });
+const format = async text => await eslint({ filePath: tempFile, text });
 
-const uglify = (text, filename, toplevel = true) =>
-    minify(text, { sourceMap: { filename, root: ROOT, url: filename + ".map" }, toplevel, v8: true });
+const normalizeCode = contents =>
+    headers.license +
+    headers.strict +
+    contents
+        .replaceAll(/\n\n\n\n?/gms, "\n\n")
+        .replaceAll(/\/\*\*.*?\*\/\n/gms, "")
+        .replaceAll(/['"`]use strict['"`];/g, "")
+        .replaceAll(postProcess.licenseRegex(), "");
 
-const buildJavaScript = async () => {
-    const source = (await readFile("./" + SOURCE)).toString();
-    const sourceCode = /\/\/#source-begin(.*?)\/\/#source-end/gms.exec(source)[1];
+const normalizeType = contents =>
+    headers.license + contents.replaceAll(/\n\n\n\n?/gms, "\n\n").replaceAll(postProcess.licenseRegex(), "");
 
-    const moduleText = template.head + template.module[0] + sourceCode + template.module[1];
-    const normalText = template.head + template.normal[0] + sourceCode + template.normal[1];
-
-    const moduleData = await format(moduleText);
-    const normalData = await doubleFormat(normalText);
-
-    const moduleUgly = uglify(moduleText, MOD_OUT + ".mjs");
-    const normalUgly = uglify(normalText, MOD_OUT + ".js");
-
-    await writeFile(join(DIST, MOD_OUT + ".mjs"), moduleData);
-    await writeFile(join(DIST, MOD_OUT + ".js"), normalData);
-
-    await writeFile(join(DIST, ZIP_OUT + ".mjs"), moduleData);
-    await writeFile(join(DIST, ZIP_OUT + ".js"), normalData);
-    await writeFile(join(DIST, ZIP_OUT + ".min.mjs"), moduleUgly.code);
-    await writeFile(join(DIST, ZIP_OUT + ".min.js"), normalUgly.code);
-    await writeFile(join(DIST, ZIP_OUT + ".min.mjs.map"), moduleUgly.map);
-    await writeFile(join(DIST, ZIP_OUT + ".min.js.map"), normalUgly.map);
-};
-
-const clean = async () => {
-    if (existsSync(DIST)) {
-        await rm(DIST, { force: true, recursive: true });
+const parallel = (params, ...tasks) => {
+    if (!Array.isArray(params)) {
+        tasks.unshift(params);
+        params = [];
     }
 
-    await mkdir(DIST);
+    return Promise.all(tasks.map(fn => fn(...params)));
 };
 
-const copyFiles = async () => {
-    await copyFile("./LICENSE.md", join(DIST, "LICENSE.md"));
-    await copyFile("./README.md", join(DIST, "README.md"));
-    await copyFile("./extend.js", join(DIST, EXT_OUT + ".js"));
-    await copyFile("./extend.d.ts", join(DIST, EXT_OUT + ".d.ts"));
-    await copyFile(`./${MOD_OUT}.d.ts`, join(DIST, MOD_OUT + ".d.ts"));
+const postProcess = {
+    extendMapUrl: "//# sourceMappingURL=extend.js.map\n",
+    indexMapUrl: "//# sourceMappingURL=index.js.map\n",
+    indexMjsMapUrl: "//# sourceMappingURL=index.mjs.map\n",
+    mapUrl: "//# sourceMappingURL=decimal-i18n.js.map\n",
+    mjsMapUrl: "//# sourceMappingURL=decimal-i18n.mjs.map\n",
+    suffix: "\nexport { Decimal };\nexport default Decimal;\n",
+    prefix: 'import Format from "./format/index";\nimport Decimal from "decimal.js";\n',
+    exportRegex: () => /export \{ default as Decimal, default \} from 'decimal.js';\n/,
+    licenseRegex: () => /\/\*\n\s+\* decimal.js-i18n v0.1.1\n\s+\* Full internationalization support for decimal\.js\.\n\s+\* MIT License\n\s+\* Copyright \(c\) 2022 Pedro José Batista <pedrobatista@myself\.com>\n\s+\* https:\/\/github.com\/pjbatista\/decimal\.js-i18n\n\s+\*\//gms, // prettier-ignore
+    mainRegex: () => /globalThis\.__Decimal__Class__Global__ \?\? require\("decimal\.js"\)/ms,
+    sectionsRegex: () => /\/\*\*@section code\*\/(.*?)\/\*\*@section ignore\*\//ms,
 };
 
-const makePackage = async () => {
-    delete nodePackage.devDependencies;
-    delete nodePackage.scripts;
-    delete nodePackage.private;
+const print = (...text) => process.stdout.write(text.join(" ") + "\n");
 
-    nodePackage.main = MOD_OUT;
-    nodePackage.name = NAME;
-    nodePackage.files = [MOD_OUT + ".js", MOD_OUT + ".mjs", MOD_OUT + ".d.ts", EXT_OUT + ".js", EXT_OUT + ".d.ts"];
-    nodePackage.browser = MOD_OUT + ".js";
-    nodePackage.module = MOD_OUT + ".mjs";
-    nodePackage.types = MOD_OUT + ".d.ts";
+const printError = (...text) => process.stderr.write(text.join(" ") + "\n");
 
-    await writeFile(join(DIST, "package.json"), JSON.stringify(nodePackage, null, 4));
+const printTask = (name, ...rest) => name && print("Task", chalk.magenta(name), ...rest);
+
+const swapMapFile = async (mapPath, newFile) => {
+    const data = JSON.parse((await readFile(mapPath)).toString());
+    data.file = newFile;
+    return JSON.stringify(data);
 };
+
+const task =
+    (name, asyncCallback) =>
+    async (...parameters) => {
+        if (typeof name === "function") {
+            asyncCallback = name;
+            name = undefined;
+        }
+
+        const t0 = process.hrtime.bigint();
+        printTask(name, "started");
+        const result = await asyncCallback(...parameters);
+
+        let total = Number(process.hrtime.bigint() - t0) / 1e6;
+        let unit = "ms";
+        if (total >= 1000) (total /= 1e3), (unit = "s");
+        if (total >= 1000) (total /= 60), (unit = "m");
+
+        printTask(name, "ended in", chalk.grey(total.toFixed(2), unit));
+        return result;
+    };
+
+const terminateWithError = error => {
+    const lineBreak = "\n    ";
+
+    if (error instanceof Error) {
+        error = `${error.message}${lineBreak}${error.stack ?? ""}`;
+    }
+
+    if (Array.isArray(error)) {
+        error = error
+            .map(line => lineBreak + (line.messageText?.messageText ?? line.message ?? line.toString()))
+            .join("");
+    }
+
+    printError(chalk.bold("Build:"), chalk.red("Failed"), "because of", error);
+    process.exit(1);
+};
+
+const terminateWithSuccess = () => {
+    print(chalk.bold("Build:"), chalk.green("Successful"));
+    process.exit(0);
+};
+
+const uglify = (text, filename, toplevel = true) =>
+    uglifyJs(text, {
+        sourceMap: { filename, content: "inline", includeSources: true, url: filename + ".map" },
+        toplevel,
+        v8: true,
+    });
+
+//#endregion
+
+//#region Build tasks --------------------------------------------------------------------------------------------------
+
+const build = task("build", async () => {
+    await parallel(buildTypeScript, buildNode);
+    await parallel(bundleEsm, bundleNode, bundleUmd, bundleType);
+});
+
+const buildTypeScript = task("build:typescript", async () => {
+    const { errors: compilerErrors, options: compilerOptions } = convertCompilerOptionsFromJson(
+        {
+            ...tsconfig.compilerOptions,
+            module: "esnext", // for easier integration with rollup
+            noEmit: false,
+            outDir: paths.local,
+            rootDir: paths.source,
+        },
+        paths.source,
+    );
+
+    if (compilerErrors.length) {
+        throw compilerErrors;
+    }
+
+    const program = createProgram({ options: compilerOptions, rootNames: names.rootLocal });
+    const { diagnostics, emitSkipped } = program.emit();
+
+    if (emitSkipped) {
+        throw diagnostics;
+    }
+});
+
+const buildNode = task("build:node", async () => {
+    const { errors: compilerErrors, options: compilerOptions } = convertCompilerOptionsFromJson(
+        {
+            ...tsconfig.compilerOptions,
+            module: "esnext", // for easier integration with rollup
+            noEmit: false,
+            outDir: paths.node,
+            rootDir: paths.source,
+        },
+        paths.source,
+    );
+
+    if (compilerErrors.length) {
+        throw compilerErrors;
+    }
+
+    const program = createProgram({ options: compilerOptions, rootNames: names.rootNode });
+    const { diagnostics, emitSkipped } = program.emit();
+
+    if (emitSkipped) {
+        throw diagnostics;
+    }
+});
+
+const bundleEsm = task("bundle:esm", async () => {
+    // Use the already transpiled and post-processed script to bundle
+    const bundle = await rollup({
+        external: ["decimal.js"],
+        input: join(paths.local, "index.js"),
+        plugins: [nodePlugin(), sourcemapsPlugin()],
+    });
+
+    const { output } = await bundle.generate({
+        exports: "named",
+        format: "esm",
+        generatedCode: { constBindings: true },
+        sourcemap: true,
+    });
+
+    if (output.length !== 1) {
+        throw new Error(`There should 1 rollup output chunk, ${output.length} found.`);
+    }
+
+    const { code, map } = output[0];
+    let contents = normalizeCode(code);
+
+    // Post-processing the bundle
+    const { mjsMapUrl, suffix, exportRegex } = postProcess;
+    contents = await format(headers.bundle + contents.replace(exportRegex(), "") + suffix + mjsMapUrl);
+    const contentsMinified = uglify(contents, names.bundle + ".mjs");
+
+    if (!existsSync(paths.bundle)) await mkdir(paths.bundle);
+    await writeFile(join(paths.bundle, names.bundle + ".mjs"), contents);
+    await writeFile(join(paths.bundle, names.bundle + ".mjs.map"), JSON.stringify(map));
+    await writeFile(join(paths.bundle, names.bundle + ".min.mjs"), contentsMinified.code);
+    await writeFile(join(paths.bundle, names.bundle + ".min.mjs.map"), contentsMinified.map);
+    if (bundle) bundle.close();
+});
+
+const bundleNode = task("bundle:node", async () => {
+    const bundle = await rollup({
+        external: ["decimal.js"],
+        input: join(paths.node, "extend.js"),
+        plugins: [nodePlugin(), sourcemapsPlugin()],
+    });
+
+    const { output } = await bundle.generate({
+        exports: "named",
+        format: "cjs",
+        generatedCode: { constBindings: true },
+        globals: { "decimal.js": "Decimal" },
+        name: "extend.js",
+        sourcemap: true,
+    });
+
+    if (output.length !== 1) {
+        throw new Error(`There should 1 rollup output chunk, ${output.length} found.`);
+    }
+
+    const { code, map } = output[0];
+    const contents = normalizeCode(code) + postProcess.extendMapUrl;
+
+    if (!existsSync(paths.package)) await mkdir(paths.package);
+    await writeFile(join(paths.package, "extend.js"), await format(contents));
+    await writeFile(join(paths.package, "extend.js.map"), JSON.stringify(map));
+});
+
+const bundleUmd = task("bundle:umd", async () => {
+    const bundle = await rollup({
+        external: ["decimal.js"],
+        input: join(paths.local, "index.js"),
+        plugins: [nodePlugin(), sourcemapsPlugin()],
+    });
+
+    const { output } = await bundle.generate({
+        exports: "named",
+        format: "umd",
+        generatedCode: { constBindings: true },
+        globals: { "decimal.js": "Decimal" },
+        name: names.long,
+        sourcemap: true,
+    });
+
+    if (output.length !== 1) {
+        throw new Error(`There should 1 rollup output chunk, ${output.length} found.`);
+    }
+
+    const { code, map } = output[0];
+    let contents = code;
+
+    // Post-processing the bundle
+    const { mapUrl } = postProcess;
+    contents = contents.replace(postProcess.mainRegex(), "Decimal") + mapUrl;
+    const contentsMinified = uglify(contents, names.bundle + ".js");
+
+    if (!existsSync(paths.bundle)) await mkdir(paths.bundle);
+    await writeFile(join(paths.bundle, names.bundle + ".js"), headers.bundle + normalizeCode(contents));
+    await writeFile(join(paths.bundle, names.bundle + ".js.map"), JSON.stringify(map));
+    await writeFile(join(paths.bundle, names.bundle + ".min.js"), contentsMinified.code);
+    await writeFile(join(paths.bundle, names.bundle + ".min.js.map"), contentsMinified.map);
+
+    if (bundle) bundle.close();
+});
+
+const bundleType = task("bundle:type", async () => {
+    const bundle = await rollup({
+        external: ["decimal.js"],
+        input: join(paths.local, "index.d.ts"),
+        plugins: [dtsPlugin()],
+    });
+    const { output } = await bundle.generate({ format: "es" });
+
+    if (output.length !== 1) {
+        throw new Error(`There should 1 rollup output chunk, ${output.length} found.`);
+    }
+
+    const { code: type } = output[0];
+    let contents = normalizeType(type);
+
+    // Post-processing the bundle
+    const { suffix, exportRegex } = postProcess;
+    contents = contents.replace(exportRegex(), "") + suffix;
+
+    if (!existsSync(paths.bundle)) await mkdir(paths.bundle);
+    await writeFile(join(paths.bundle, names.bundle + ".d.ts"), contents);
+
+    if (bundle) bundle.close();
+});
+
+//#endregion
+
+//#region Misc. tasks --------------------------------------------------------------------------------------------------
+
+const clean = task("clean", async () => {
+    const dirs = [paths.bundle, paths.docs, paths.local, paths.node, paths.package];
+
+    for (const dir of dirs) {
+        if (existsSync(dir)) {
+            await rm(dir, { force: true, recursive: true });
+        }
+    }
+});
+
+const make = task("make", () => parallel(makePackage, makeZip));
+
+const makePackage = task("make:package", async () => {
+    // First create the package modifying the dev package.json
+    const distPackage = { ...nodePackage };
+    delete distPackage.devDependencies;
+    delete distPackage.private;
+    delete distPackage.scripts;
+    distPackage.name = names.long;
+    distPackage.main = names.node;
+    distPackage.browser = names.node + ".js";
+    distPackage.module = names.node + ".mjs";
+    distPackage.types = names.node + ".d.ts";
+    distPackage.files = [
+        names.node + ".js",
+        names.node + ".js.map",
+        names.node + ".mjs",
+        names.node + ".mjs.map",
+        names.node + ".d.ts",
+    ];
+
+    await writeFile(join(paths.package, "package.json"), JSON.stringify(distPackage, null, 4));
+
+    const extendContents =
+        headers.extend + normalizeCode((await readFile(join(paths.package, "extend.js"))).toString());
+
+    let jsContents = (await readFile(join(paths.bundle, "decimal-i18n.js"))).toString();
+    jsContents = jsContents.replace(headers.bundle, headers.base).replace(postProcess.mapUrl, postProcess.indexMapUrl);
+
+    let mjsContents = (await readFile(join(paths.bundle, "decimal-i18n.mjs"))).toString();
+    mjsContents = mjsContents
+        .replace(headers.bundle, headers.base)
+        .replace(postProcess.mjsMapUrl, postProcess.indexMjsMapUrl)
+        .replace(postProcess.mainRegex(), "Decimal");
+
+    const jsMap = await swapMapFile(join(paths.bundle, "decimal-i18n.js.map"), "index.js");
+    const mjsMap = await swapMapFile(join(paths.bundle, "decimal-i18n.js.map"), "index.mjs");
+
+    await writeFile(join(paths.package, "extend.js"), await doubleFormat(extendContents));
+    await writeFile(join(paths.package, "index.js"), await format(jsContents));
+    await writeFile(join(paths.package, "index.mjs"), await format(mjsContents));
+    await writeFile(join(paths.package, "index.js.map"), jsMap);
+    await writeFile(join(paths.package, "index.mjs.map"), mjsMap);
+
+    await copyFile(join(paths.bundle, "decimal-i18n.d.ts"), join(paths.package, "index.d.ts"));
+    await copyFile(join(paths.node, "extend.d.ts"), join(paths.package, "extend.d.ts"));
+    await copyFile(join(paths.root, "README.md"), join(paths.package, "README.md"));
+});
+
+const makeZip = task("make:zip", async () => {});
+
+//#endregion
+
+const start = task("all", async () => {
+    await clean();
+    await build();
+    await make();
+});
 
 const main = async () => {
-    const time0 = process.hrtime.bigint();
-    await clean();
-    await buildJavaScript();
-    await copyFiles();
-    await makePackage();
+    chalk = (await import("chalk")).default;
+    cjsPlugin = (await import("@rollup/plugin-commonjs")).default;
+    dtsPlugin = (await import("rollup-plugin-dts")).default;
+    nodePlugin = (await import("@rollup/plugin-node-resolve")).default;
+    sourcemapsPlugin = (await import("rollup-plugin-sourcemaps")).default;
 
-    const timeTotal = (Number(process.hrtime.bigint() - time0) / 1e9).toFixed(2);
-    process.stdout.write(`Build: 🟢 Successful (${timeTotal}s)\n`);
+    await start();
 };
 
-main().catch(e => process.stderr.write(`Build: 🔴 Failed. Reason: ${e.message ?? e}${e.stack ?? ""}\n`));
+main().then(terminateWithSuccess).catch(terminateWithError);

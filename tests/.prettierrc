@@ -1,0 +1,4 @@
+{
+    "extends": "../.prettierrc",
+    "printWidth": 999999
+}

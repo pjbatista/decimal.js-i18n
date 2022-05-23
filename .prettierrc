@@ -2,6 +2,7 @@
     "arrowParens": "avoid",
     "bracketSpacing": true,
     "endOfLine": "lf",
+    "jsdocPrintWidth": 111,
     "printWidth": 120,
     "semi": true,
     "trailingComma": "all",

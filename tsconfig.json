@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": false,
+        "inlineSources": true,
+        "isolatedModules": true,
+        "lib": ["es2015", "es2016", "es2017", "es2019", "es2020", "esnext"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "newLine": "lf",
+        "noEmit": true,
+        "noEmitOnError": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "paths": { "@/*": ["./src/*"], "@test/*": ["./tests/*"] },
+        "preserveConstEnums": true,
+        "skipLibCheck": false,
+        "sourceMap": true,
+        "strict": true,
+        "target": "esnext"
+    },
+    "exclude": ["dist", "node_modules"]
+}
