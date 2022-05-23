@@ -1,4 +1,4 @@
-# ![decimal.js-i18n](logo.svg)
+# ![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
