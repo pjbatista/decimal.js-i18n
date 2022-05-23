@@ -265,7 +265,7 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ## Changelog
 
-### v0.2.0 (2022-05-23)
+### v0.2.1 (2022-05-23)
 
 Simple fix to the published package.
 
