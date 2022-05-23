@@ -267,6 +267,10 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ### v0.2.0 (2022-05-23)
 
+Simple fix to the published package.
+
+### v0.2.0 (2022-05-23)
+
 TypeScript codebase rewrite.
 
 - Add extensive randomized testing.

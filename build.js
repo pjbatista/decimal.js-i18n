@@ -381,6 +381,9 @@ const makePackage = task("make:package", async () => {
     distPackage.module = names.node + ".mjs";
     distPackage.types = names.node + ".d.ts";
     distPackage.files = [
+        "extend.d.ts",
+        "extend.js",
+        "extend.js.map",
         names.node + ".js",
         names.node + ".js.map",
         names.node + ".mjs",
@@ -414,6 +417,7 @@ const makePackage = task("make:package", async () => {
     await copyFile(join(paths.bundle, "decimal-i18n.d.ts"), join(paths.package, "index.d.ts"));
     await copyFile(join(paths.node, "extend.d.ts"), join(paths.package, "extend.d.ts"));
     await copyFile(join(paths.root, "README.md"), join(paths.package, "README.md"));
+    await copyFile(join(paths.root, "LICENSE.md"), join(paths.package, "LICENSE.md"));
 });
 
 const makeZip = task("make:zip", async () => {});
