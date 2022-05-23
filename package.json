@@ -1,7 +1,7 @@
 {
     "name": "decimal.js-i18n-dev",
     "description": "Full internationalization support for decimal.js.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "private": true,
     "keywords": [
         "number",

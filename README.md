@@ -35,7 +35,7 @@ pnpm install decimal.js decimal.js-i18n
 
 Or [download a release file](https://github.com/pjbatista/decimal.js-i18n/releases) with the appropriate version for you.
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Usage
 
@@ -118,7 +118,7 @@ formatter.formatToParts(Decimal.acos(-1));
 // ]
 ```
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Parameters
 
@@ -132,7 +132,7 @@ The constructor for `Decimal.Format` and `Decimal.prototype.toLocaleString` are 
 
 <sup>(optional)</sup> Object used to configure the behavior of the string localization. If omitted, it uses the same defaults as `Intl.NumberFormat`. The next section of this document will explain the behavior of each option property as well as their defaults. Descriptions were extracted directly from MDN and W3C and adapted to this document.
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Options
 
@@ -251,7 +251,7 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ² The minimum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Links
 
@@ -261,7 +261,7 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 - [Intl on W3C Web Docs](https://docs.w3cub.com/javascript/global_objects/intl)
 - [ECMAScript Internationalization API Specification](https://tc39.es/ecma402)
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Changelog
 
@@ -288,7 +288,7 @@ First version
 - To be replicated in more environments.
 - To be published after thorough testing.
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ## Disclaimer and License
 
@@ -296,7 +296,7 @@ This project **IS NOT** endorsed or supported by `decimal.js`, or any of its con
 
 `decimal.js-i18n` is licensed under the MIT License. See [LICENSE.md](https://github.com/pjbatista/decimal.js-i18n/blob/master/serialize/LICENSE.md) for more information.
 
-[<sub>⇧ back to top</sub>](#contents)
+[<sub>⇧ back to top</sub>](#summary)
 
 ---
 
