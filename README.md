@@ -1,4 +1,12 @@
-# ![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only)![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg#gh-light-mode-only)
+<h1>    
+    <a href="https://github.com/pjbatista/decimal.js-i18n">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only">
+          <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg">
+          <img alt="decimal.js-i18n logo" src="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg">
+        </picture>
+    </a>
+</h1>
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
