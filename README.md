@@ -1,7 +1,7 @@
-<picture>
-  <source srcset="./logo-dark.svg" media="(prefers-color-scheme: dark)">
+# <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./logo-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./logo.svg">
   <img alt="decimal.js-i18n logo" src="./logo.svg#gh-light-mode-only">
-  <img alt="decimal.js-i18n logo" src="./logo-dark.svg#gh-dark-mode-only">
 </picture>
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
