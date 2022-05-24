@@ -5,7 +5,6 @@
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
  * https://github.com/pjbatista/decimal.js-i18n
  */
-import type Format from "./class";
 import type FormatPartTypes from "./partTypes";
 
 /** Concatenates the values of the given parts. */
