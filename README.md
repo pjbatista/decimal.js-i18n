@@ -1,4 +1,4 @@
-# ![decimal-.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only)![decimal-.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg#gh-light-mode-only)
+# ![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only)![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg#gh-light-mode-only)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
@@ -265,7 +265,7 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ## Changelog
 
-### v0.2.4 (2022-05-23)
+### v0.2.4-v0.2.5 (2022-05-24)
 
 _"What I believe to be a stable version"_ release.
 
