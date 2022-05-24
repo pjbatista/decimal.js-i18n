@@ -267,9 +267,10 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ### v0.2.4 (2022-05-23)
 
-Stable version release.
+_"What I believe to be a stable version"_ release.
 
-- Thoroughly tested.
+- Logo SVG fix;
+- Increase testing;
 - Build script finalized.
 
 ### v0.2.0-0.2.3 (2022-05-23)
