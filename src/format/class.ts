@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.3
+ * decimal.js-i18n v0.2.4
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -106,7 +106,7 @@ export class Format {
         const plainFormat = new Intl.NumberFormat(locales, plainOptions);
 
         // 5. Localized numeric constants
-        const numbers = Array(9)
+        const numbers = Array(10)
             .fill(null)
             .map((_, index) => plainFormat.format(index));
         const numberMatch = new RegExp("[" + numbers.join("") + "]", "g");

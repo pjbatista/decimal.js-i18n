@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.3
+ * decimal.js-i18n v0.2.4
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -8,12 +8,11 @@
 import Format, { FormatOptions } from "@/format";
 import * as constants from "@/format/constants";
 import { cloneClass } from "clone-class";
-import TrueDecimal from "decimal.js";
+import Decimal from "decimal.js";
 
-export const Decimal = cloneClass(TrueDecimal);
-
-export const getDecimalClone = () => cloneClass(TrueDecimal);
-export const pow10 = (exponent: TrueDecimal.Value) => Decimal.pow(10, exponent);
+export { Decimal };
+export const getDecimalClone = () => cloneClass(Decimal);
+export const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
 export const toString = (target: object) => Object.prototype.toString.call(target);
 
 export const basicNumbers = [0, -0, 1, -1, 0.5, -0.5, 10, -10, 10.5, -10.5, 100.5, -100.5, 666.6, -666.6, 1000.5, -1000.5, "123456789.1234", "-123456789.1234", Infinity, -Infinity, NaN, -NaN] as const;

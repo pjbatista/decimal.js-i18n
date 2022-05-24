@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.3
+ * decimal.js-i18n v0.2.4
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -71,6 +71,25 @@ describe("Decimal.Format class", () => {
             const expected = thirtyByThirtyExpected[decimal as keyof typeof thirtyByThirtyExpected];
             expect(result).to.deep.equal(expected);
         }
+    });
+
+    it("Method format", () => {
+        Decimal.set({ precision: 150 });
+        const pi = Decimal.acos(-1);
+
+        let formatter = new Format("ar", { minimumSignificantDigits: 100, notation: "engineering", style: "unit", unit: "kilometer-per-hour" });
+        expect(formatter.format("1e+101")).to.equal("١٠٠٫٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠اس٩٩ كم/س");
+        expect(formatter.format("-1e+101")).to.equal("؜-١٠٠٫٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠اس٩٩ كم/س");
+        expect(formatter.format("-1e-101")).to.equal("؜-١٠٫٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠اس؜-١٠٢ كم/س");
+        expect(formatter.format("1e-101")).to.equal("١٠٫٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠٠اس؜-١٠٢ كم/س");
+        expect(formatter.format(pi)).to.equal("٣٫٠١٤١٥٩٢٦٥٣٥٨٩٧٩٣٢٣٨٤٦٢٦٤٣٣٨٣٢٧٩٥٠٢٨٨٤١٩٧١٦٩٣٩٩٣٧٥١٠٥٨٢٠٩٧٤٩٤٤٥٩٢٣٠٧٨١٦٤٠٦٢٨٦٢٠٨٩٩٨٦٢٨٠٣٤٨٢٥٣٤٢١١٧٠٧اس٠ كم/س");
+
+        formatter = new Format("lo", { minimumFractionDigits: 150, numberingSystem: "laoo", style: "percent" });
+        expect(formatter.format("1e11")).to.equal("໑໐.໐໐໐.໐໐໐.໐໐໐.໐໐໐,໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐%");
+        expect(formatter.format("-1e11")).to.equal("-໑໐.໐໐໐.໐໐໐.໐໐໐.໐໐໐,໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐%");
+        expect(formatter.format("-1e-11")).to.equal("-໐,໐໐໐໐໐໐໐໐໑໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐%");
+        expect(formatter.format("1e-11")).to.equal("໐,໐໐໐໐໐໐໐໐໑໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐%");
+        expect(formatter.format(pi)).to.equal("໓໑໔,໑໕໙໒໖໕໓໕໘໙໗໙໓໒໓໘໔໖໒໖໔໓໓໘໓໒໗໙໕໐໒໘໘໔໑໙໗໑໖໙໓໙໙໓໗໕໑໐໕໘໒໐໙໗໔໙໔໔໕໙໒໓໐໗໘໑໖໔໐໖໒໘໖໒໐໘໙໙໘໖໒໘໐໓໔໘໒໕໓໔໒໑໑໗໐໖໗໙໘໒໑໔໘໐໘໖໕໑໓໒໘໒໓໐໖໖໔໗໐໙໓໘໔໔໖໐໙໕໕໐໕໘໒໒໓໑໗໒໕໓໕໙໔໐໘໑໓໐໐໐%");
     });
 });
 

@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.3
+ * decimal.js-i18n v0.2.4
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -18,8 +18,12 @@ describe("Sub-module `extend` (non-automatic activation)", () => {
     });
 
     it("should properly extend a Decimal-like constructor", () => {
-        const Dec = extend(getDecimalClone());
-        expect(Dec.Format).to.be.a("function");
-        expect(new Dec("1e9").toLocaleString("en-US")).to.equal("1,000,000,000");
+        extend(Decimal);
+        expect(Decimal.Format).to.be.a("function");
+        expect(toString(new Decimal.Format())).to.equal(toStringTag);
+        expect(new Decimal("1e9").toLocaleString("en-US")).to.equal("1,000,000,000");
+        expect(new Decimal("1e9").toLocaleString("en-US", { minimumFractionDigits: 30 })).to.equal("1,000,000,000.000000000000000000000000000000");
+        expect(new Decimal("1e9").toLocaleString("en-US", { style: "percent" })).to.equal("100,000,000,000%");
+        expect(new Decimal("1e9").toLocaleString("en-US", { minimumIntegerDigits: 30, style: "percent" })).to.equal("000,000,000,000,000,000,100,000,000,000%");
     });
 });

@@ -1,4 +1,4 @@
-# [![decimal.js-i18n](https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg)](https://github.com/pjbatista/decimal.js-i18n)
+# [![decimal.js-i18n](./logo.svg)](https://github.com/pjbatista/decimal.js-i18n)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
@@ -265,14 +265,16 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ## Changelog
 
-### v0.2.3 (2022-05-23)
+### v0.2.4 (2022-05-23)
 
-Fixes to the documentation and examples.
+Stable version release.
 
-- Adapted package in `builder.js`.
-- Better `logo.svg` background color.
+- Thoroughly tested.
+- Build script finalized.
 
-### v0.2.0 (2022-05-23)
+### v0.2.0-0.2.3 (2022-05-23)
+
+**Note:** Multiple versions published until many small details were combed through.
 
 TypeScript codebase rewrite.
 
@@ -282,7 +284,9 @@ TypeScript codebase rewrite.
 
 ### v0.1.0 (2022-05-18)
 
-First version
+**Note:** This was originally written in JS, not TS.
+
+First version.
 
 - Code base and unit tests created.
 - To be replicated in more environments.

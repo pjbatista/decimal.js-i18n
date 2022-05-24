@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.3
+ * decimal.js-i18n v0.2.4
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -14,7 +14,8 @@
 
 //#region Imports ------------------------------------------------------------------------------------------------------
 
-const { existsSync, rm, writeFile, mkdir, readFile, copyFile } = require("fs-extra");
+const { existsSync, rm, writeFile, mkdir, readFile, copyFile, createWriteStream } = require("fs-extra");
+const JSZip = require("jszip");
 const { join } = require("path");
 const eslint = require("prettier-eslint");
 const { rollup } = require("rollup");
@@ -22,6 +23,7 @@ const { convertCompilerOptionsFromJson, createProgram } = require("typescript");
 const { minify: uglifyJs } = require("uglify-js");
 const tsconfig = require("./tsconfig.json");
 const nodePackage = require("./package.json");
+const version = nodePackage.version;
 
 // ESMs are imported asynchronously on the main task
 let chalk;
@@ -40,7 +42,7 @@ const headers = {
     base: '/// <reference path="./index.d.ts" />\n',
     bundle: '/// <reference path="./decimal-i18n.d.ts" />\n',
     extend: '/// <reference path="./extend.d.ts" />\n',
-    license: "/*\n * decimal.js-i18n v0.2.3\n * Full internationalization support for decimal.js.\n * MIT License\n * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n * https://github.com/pjbatista/decimal.js-i18n\n */\n", // prettier-ignore
+    license: `/*\n * decimal.js-i18n v${version}\n * Full internationalization support for decimal.js.\n * MIT License\n * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>\n * https://github.com/pjbatista/decimal.js-i18n\n */\n`, // prettier-ignore
     strict: '"use strict";\n',
 };
 
@@ -104,7 +106,7 @@ const postProcess = {
     suffix: "\nexport { Decimal };\nexport default Decimal;\n",
     prefix: 'import Format from "./format/index";\nimport Decimal from "decimal.js";\n',
     exportRegex: () => /export \{ default as Decimal, default \} from 'decimal.js';\n/,
-    licenseRegex: () => /\/\*\n\s+\* decimal.js-i18n v0.2.3\n\s+\* Full internationalization support for decimal\.js\.\n\s+\* MIT License\n\s+\* Copyright \(c\) 2022 Pedro José Batista <pedrobatista@myself\.com>\n\s+\* https:\/\/github.com\/pjbatista\/decimal\.js-i18n\n\s+\*\//gms, // prettier-ignore
+    licenseRegex: () => /\/\*\n\s+\* decimal.js-i18n v[0-9]+\.[0-9]+\.[0-9]+\n\s+\* Full internationalization support for decimal\.js\.\n\s+\* MIT License\n\s+\* Copyright \(c\) 2022 Pedro José Batista <pedrobatista@myself\.com>\n\s+\* https:\/\/github.com\/pjbatista\/decimal\.js-i18n\n\s+\*\//gms, // prettier-ignore
     mainRegex: () => /globalThis\.__Decimal__Class__Global__ \?\? require\("decimal\.js"\)/ms,
     sectionsRegex: () => /\/\*\*@section code\*\/(.*?)\/\*\*@section ignore\*\//ms,
 };
@@ -420,7 +422,28 @@ const makePackage = task("make:package", async () => {
     await copyFile(join(paths.root, "LICENSE.md"), join(paths.package, "LICENSE.md"));
 });
 
-const makeZip = task("make:zip", async () => {});
+const makeZip = task("make:zip", async () => {
+    const dtsData = (await readFile(join(paths.bundle, "decimal-i18n.d.ts"))).toString();
+
+    const createZip = async name => {
+        const zip = new JSZip();
+        zip.file("decimal-i18n.d.ts", dtsData);
+        zip.file(name, (await readFile(join(paths.bundle, name))).toString());
+        zip.file(name + ".map", (await readFile(join(paths.bundle, name + ".map"))).toString());
+
+        return new Promise(resolve =>
+            zip
+                .generateNodeStream({ streamFiles: true })
+                .pipe(createWriteStream(join(paths.bundle, name + "-v" + version + ".zip")))
+                .on("finish", resolve),
+        );
+    };
+
+    await createZip("decimal-i18n.js");
+    await createZip("decimal-i18n.min.js");
+    await createZip("decimal-i18n.mjs");
+    await createZip("decimal-i18n.min.mjs");
+});
 
 //#endregion
 
