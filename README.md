@@ -1,4 +1,10 @@
-# [![decimal.js-i18n](./logo.svg)](https://github.com/pjbatista/decimal.js-i18n)
+<picture>
+  <source srcset="./logo-dark.svg" media="(prefers-color-scheme: dark)">
+  <img alt="decimal.js-i18n logo" src="./logo.svg#gh-light-mode-only">
+  <span style="display: none">
+    <img alt="decimal.js-i18n logo" src="./logo-dark.svg#gh-dark-mode-only">
+  </span>
+</picture>
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
