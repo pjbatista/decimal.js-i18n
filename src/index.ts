@@ -12,7 +12,9 @@ import type { FormatLocale, FormatOptions, FormatNotation, FormatStyle } from ".
 
 const main = (Decimal: Decimal.Constructor) => {
     // Do not attempt to redefine the module, if already extended
-    if (typeof Decimal.Format !== "undefined") return;
+    if (typeof Decimal.Format !== "undefined") {
+        return;
+    }
 
     Object.defineProperty(Decimal, "Format", { value: Format });
     Object.defineProperty(Decimal.prototype, "toLocaleString", {

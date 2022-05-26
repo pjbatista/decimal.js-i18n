@@ -5,6 +5,7 @@
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
  * https://github.com/pjbatista/decimal.js-i18n
  */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import type Decimal from ".";
 
 /**

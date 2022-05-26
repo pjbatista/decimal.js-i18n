@@ -28,7 +28,7 @@ describe("Decimal.Format class", () => {
 
         // Invalid constructors:
         expect(() => new Format("en-US", { minimumFractionDigits: 1e9 })).to.throw(RangeError);
-        expect(() => new Format(undefined, { minimumFractionDigits: 1e9 })).to.throw(RangeError);
+        expect(() => new Format(undefined, { maximumFractionDigits: 1e9, minimumFractionDigits: 1e9 })).to.throw(RangeError);
         expect(() => new Format("en-US", { minimumIntegerDigits: 1e10 })).to.throw(RangeError);
         expect(() => new Format(undefined, { maximumSignificantDigits: 1e10 })).to.throw(RangeError);
         expect(() => new Format("en-US", { minimumSignificantDigits: 1e10 })).to.throw(RangeError);

@@ -19,7 +19,7 @@ import type FormatNumberingSystem from "./numberingSystem";
 import type FormatOptions from "./options";
 import { extend, resolve, toEcma, validate } from "./options";
 import type FormatPart from "./part";
-import { concatenate, exponents, fractions, integerGroups, integers } from "./part";
+import { exponents, fractions, integerGroups, integers, PartValue } from "./part";
 import type FormatPartTypes from "./partTypes";
 import type ResolvedFormatOptions from "./resolvedFormatOptions";
 import type FormatSignDisplay from "./signDisplay";
@@ -30,8 +30,19 @@ import type FormatUnitDisplay from "./unitDisplay";
 import type FormatUseGrouping from "./useGrouping";
 
 // Calculates an exponential value using base₁₀
-const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
 const defaultLocales = LOCALES.slice();
+
+const concatenate = <T extends PartValue>(filter: T[] | ((p: T) => boolean), parts: T[] = []) => {
+    if (typeof filter === "function") {
+        parts = parts.filter(filter);
+    } else {
+        parts = filter;
+    }
+
+    return parts.map(p => p.value).join("");
+};
+
+const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
 
 /**
  * The `Decimal.Format` object enables language-sensitive decimal number formatting. It is entirely based on
@@ -231,8 +242,7 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
                     return plainFormat.format(BigInt(pow10(minFD).toFixed())).slice(1);
                 }
 
-                let prefix = "",
-                    suffix = "";
+                let suffix = "";
 
                 const targetDigits = maxFD - 1;
                 // Exponential value of the fraction (converting from decimal to bigint)
@@ -242,12 +252,8 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
                 if (fractionDigits < minFD) {
                     suffix = zeroFill(minFD - targetDigits);
                 }
-                // Or a zero-filled left-side expansion if the exponential value insufficient
-                else if (exponential.length < minFD - 1) {
-                    prefix = zeroFill(minFD - exponential.length);
-                }
 
-                const fractionValue = prefix + plainFormat.format(BigInt(exponential)) + suffix;
+                const fractionValue = plainFormat.format(BigInt(exponential)) + suffix;
 
                 // If the value is still not enough, it needs more left-zero-filling
                 if (fractionValue.length < minFD) {

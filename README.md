@@ -1,4 +1,4 @@
-<h1>
+<h1 title="decimal.js-i18n">
     <a href="https://github.com/pjbatista/decimal.js-i18n">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only">
@@ -8,7 +8,7 @@
     </a>
 </h1>
 
-![github top language](https://img.shields.io/github/languages/top/pjbatista/decimal.js-i18n)
+[![Build Status](https://scrutinizer-ci.com/g/pjbatista/decimal.js-i18n/badges/build.png?b=main)](https://scrutinizer-ci.com/g/pjbatista/decimal.js-i18n/build-status/main) [![Code Coverage](https://scrutinizer-ci.com/g/pjbatista/decimal.js-i18n/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/pjbatista/decimal.js-i18n/?branch=main) ![NPM](https://img.shields.io/npm/l/decimal.js-i18n) ![node-current](https://img.shields.io/node/v/decimal.js-i18n)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
@@ -311,12 +311,12 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ## Changelog
 
-### TODO: Decide on next version
+### v0.2.6 (2022-05-26)
 
 Improve distribution, type aliasing, and docs.
 
 - Add generic typing to `notation` and `style`.
-- No longer require node ≥ 15 (package as es5).
+- Established node engine ≥ 12 as a hard requirement.
 - Standardize documentation on doc blocks.
 - Standardize documentation on README.md.
 - Prepare repository for scrutinizer.

@@ -179,7 +179,7 @@ const uglify = (text, filename, toplevel = true) =>
 
 const build = task("build", async () => {
     await parallel(buildTypeScript, buildNode);
-    await parallel(bundleEsm, bundleNode, bundleUmd, bundleType);
+    await parallel(bundleEsm, bundleNodeExtend, bundleNodeIndex, bundleUmd, bundleType);
 });
 
 const buildTypeScript = task("build:typescript", async () => {
@@ -210,10 +210,12 @@ const buildNode = task("build:node", async () => {
     const { errors: compilerErrors, options: compilerOptions } = convertCompilerOptionsFromJson(
         {
             ...tsconfig.compilerOptions,
-            module: "esnext", // for easier integration with rollup
+            downlevelIteration: true,
+            module: "commonjs",
             noEmit: false,
             outDir: paths.node,
             rootDir: paths.source,
+            target: "es5"
         },
         paths.source,
     );
@@ -265,11 +267,11 @@ const bundleEsm = task("bundle:esm", async () => {
     if (bundle) bundle.close();
 });
 
-const bundleNode = task("bundle:node", async () => {
+const bundleNodeExtend = task("bundle:node:extend", async () => {
     const bundle = await rollup({
-        external: ["decimal.js"],
+        external: ["decimal.js", "."],
         input: join(paths.node, "extend.js"),
-        plugins: [nodePlugin(), sourcemapsPlugin()],
+        plugins: [nodePlugin(), cjsPlugin(), sourcemapsPlugin()],
     });
 
     const { output } = await bundle.generate({
@@ -277,6 +279,7 @@ const bundleNode = task("bundle:node", async () => {
         format: "cjs",
         generatedCode: { constBindings: true },
         globals: { "decimal.js": "Decimal" },
+        inlineDynamicImports: true,
         name: "extend.js",
         sourcemap: true,
     });
@@ -289,8 +292,37 @@ const bundleNode = task("bundle:node", async () => {
     const contents = normalizeCode(code) + postProcess.extendMapUrl;
 
     if (!existsSync(paths.package)) await mkdir(paths.package);
-    await writeFile(join(paths.package, "extend.js"), await format(contents));
+    await writeFile(join(paths.package, "extend.js"), contents);
     await writeFile(join(paths.package, "extend.js.map"), JSON.stringify(map));
+});
+
+const bundleNodeIndex = task("bundle:node:index", async () => {
+    const bundle = await rollup({
+        external: ["decimal.js"],
+        input: join(paths.node, "index.js"),
+        plugins: [nodePlugin(), cjsPlugin(), sourcemapsPlugin()],
+    });
+
+    const { output } = await bundle.generate({
+        exports: "named",
+        format: "umd",
+        generatedCode: { constBindings: true },
+        globals: { "decimal.js": "Decimal" },
+        inlineDynamicImports: true,
+        name: "index.js",
+        sourcemap: true,
+    });
+
+    if (output.length !== 1) {
+        throw new Error(`There should 1 rollup output chunk, ${output.length} found.`);
+    }
+
+    const { code, map } = output[0];
+    const contents = normalizeCode(code) + postProcess.extendMapUrl;
+
+    if (!existsSync(paths.package)) await mkdir(paths.package);
+    await writeFile(join(paths.package, "index.js"), contents);
+    await writeFile(join(paths.package, "index.js.map"), JSON.stringify(map));
 });
 
 const bundleUmd = task("bundle:umd", async () => {
@@ -395,30 +427,6 @@ const makePackage = task("make:package", async () => {
     distPackage.engines.node = "^12";
 
     await writeFile(join(paths.package, "package.json"), JSON.stringify(distPackage, null, 4));
-
-    const extendContents =
-        headers.extend + normalizeCode((await readFile(join(paths.package, "extend.js"))).toString());
-
-    let jsContents = (await readFile(join(paths.bundle, "decimal-i18n.js"))).toString();
-    jsContents = jsContents.replace(headers.bundle, headers.base).replace(postProcess.mapUrl, postProcess.indexMapUrl);
-
-    let mjsContents = (await readFile(join(paths.bundle, "decimal-i18n.mjs"))).toString();
-    mjsContents = mjsContents
-        .replace(headers.bundle, headers.base)
-        .replace(postProcess.mjsMapUrl, postProcess.indexMjsMapUrl)
-        .replace(postProcess.mainRegex(), "Decimal");
-
-    const jsMap = await swapMapFile(join(paths.bundle, "decimal-i18n.js.map"), "index.js");
-    const mjsMap = await swapMapFile(join(paths.bundle, "decimal-i18n.js.map"), "index.mjs");
-
-    await writeFile(join(paths.package, "extend.js"), await doubleFormat(extendContents));
-    await writeFile(join(paths.package, "index.js"), await format(jsContents));
-    await writeFile(join(paths.package, "index.mjs"), await format(mjsContents));
-    await writeFile(join(paths.package, "index.js.map"), jsMap);
-    await writeFile(join(paths.package, "index.mjs.map"), mjsMap);
-
-    await copyFile(join(paths.bundle, "decimal-i18n.d.ts"), join(paths.package, "index.d.ts"));
-    await copyFile(join(paths.node, "extend.d.ts"), join(paths.package, "extend.d.ts"));
     await copyFile(join(paths.root, "README.md"), join(paths.package, "README.md"));
     await copyFile(join(paths.root, "LICENSE.md"), join(paths.package, "LICENSE.md"));
 });

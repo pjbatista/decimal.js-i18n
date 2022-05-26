@@ -22,33 +22,27 @@ describe("Localization test (comparing results to native)", () => {
             }
         });
 
-        it(`locale=${locale ?? "undefined"}, compact notation, should match native`, () => {
-            const decFormat = new Format(locale, { notation: "compact" });
-            const numFormat = new Intl.NumberFormat(locale, { notation: "compact"});
+        it(`locale=${locale ?? "undefined"}, all notations and styles, should match native`, () => {
+            let decFormat = new Format<any, any>(locale, { notation: "compact" });
+            let numFormat = new Intl.NumberFormat(locale, { notation: "compact" });
             for (const number of basicNumbers) {
                 expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
             }
-        });
 
-        it(`locale=${locale ?? "undefined"}, engineering notation, should match native`, () => {
-            const decFormat = new Format(locale, { notation: "engineering" });
-            const numFormat = new Intl.NumberFormat(locale, { notation: "engineering"});
+            decFormat = new Format(locale, { notation: "engineering" });
+            numFormat = new Intl.NumberFormat(locale, { notation: "engineering" });
             for (const number of basicNumbers) {
                 expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
             }
-        });
 
-        it(`locale=${locale ?? "undefined"}, scientific notation, should match native`, () => {
-            const decFormat = new Format(locale, { notation: "scientific" });
-            const numFormat = new Intl.NumberFormat(locale, { notation: "scientific"});
+            decFormat = new Format(locale, { notation: "scientific" });
+            numFormat = new Intl.NumberFormat(locale, { notation: "scientific" });
             for (const number of basicNumbers) {
                 expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
             }
-        });
 
-        it(`locale=${locale ?? "undefined"}, percent style, should match native`, () => {
-            const decFormat = new Format(locale, { style: "percent" });
-            const numFormat = new Intl.NumberFormat(locale, { style: "percent"});
+            decFormat = new Format(locale, { style: "percent" });
+            numFormat = new Intl.NumberFormat(locale, { style: "percent" });
             for (const number of basicNumbers) {
                 expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
             }

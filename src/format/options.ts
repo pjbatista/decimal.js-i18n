@@ -95,12 +95,10 @@ export const resolve = <TNotation extends FormatNotation = "standard", TStyle ex
  * @template TNotation Numeric notation of formatting.
  * @template TStyle Numeric style of formatting.
  * @param options Decimal format options used as a baseline for the new object.
- * @param toSpecification Whether to remove non-standard properties or not. Defaults to `false`.
  * @returns A new `Intl.NumberFormatOptions` object.
  */
 export const toEcma = <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
     options: FormatOptions<TNotation, TStyle>,
-    toSpecification = false,
 ) => {
     const result = { ...options };
 
@@ -110,12 +108,6 @@ export const toEcma = <TNotation extends FormatNotation = "standard", TStyle ext
             result[property] = ECMA_LIMIT + factor;
         }
     });
-
-    // Info: handy for browser-compatibility
-    if (toSpecification) {
-        delete result.rounding;
-        delete result.trailingZeroDisplay;
-    }
 
     return result as Intl.NumberFormatOptions;
 };

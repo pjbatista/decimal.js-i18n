@@ -12,12 +12,16 @@ import Decimal from "decimal.js";
 import "mocha";
 
 describe("Sub-module `extend` (non-automatic activation)", () => {
-    it("Decimal class should be clean", () => {
+    it("does not activate automatically", () => {
         expect(Decimal.Format).to.be.an("undefined");
         expect(new Decimal("1e9").toLocaleString("en-US")).to.equal("1000000000");
     });
 
-    it("should properly extend a Decimal-like constructor", () => {
+    it("throws with invalid constructor", () => {
+        expect(() => extend({})).to.throw(TypeError);
+    });
+
+    it("extends a valid constructor", () => {
         extend(Decimal);
         expect(Decimal.Format).to.be.a("function");
         expect(toString(new Decimal.Format())).to.equal(toStringTag);
