@@ -31,6 +31,7 @@ import type FormatUseGrouping from "./useGrouping";
 
 // Calculates an exponential value using base₁₀
 const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
+const defaultLocales = LOCALES.slice();
 
 /**
  * The `Decimal.Format` object enables language-sensitive decimal number formatting. It is entirely based on
@@ -299,8 +300,8 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
      *
      * @returns Array of strings with the available locales.
      */
-    static supportedLocales() {
-        return Intl.NumberFormat.supportedLocalesOf(LOCALES.slice()) as FormatLocale[];
+    static supportedLocales(): FormatLocale[] {
+        return Intl.NumberFormat.supportedLocalesOf(defaultLocales);
     }
 
     /**
