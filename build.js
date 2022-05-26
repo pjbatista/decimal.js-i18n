@@ -392,6 +392,7 @@ const makePackage = task("make:package", async () => {
         names.node + ".mjs.map",
         names.node + ".d.ts",
     ];
+    distPackage.engines.node = "^12";
 
     await writeFile(join(paths.package, "package.json"), JSON.stringify(distPackage, null, 4));
 
