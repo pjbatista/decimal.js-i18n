@@ -39,7 +39,7 @@
         "test": "mocha --bail -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts"
     },
     "engines": {
-        "node": ">=15"
+        "node": ">=16"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^22.0.0",
