@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -14,5 +14,5 @@
  * - "`engineering`" return the exponent of ten when divisible by three;
  * - "`compact`" string representing exponent; defaults to using the "short" form.
  */
-export type Notation = "standard" | "scientific" | "engineering" | "compact";
-export default Notation;
+export type FormatNotation = "standard" | "scientific" | "engineering" | "compact";
+export default FormatNotation;

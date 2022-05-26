@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -13,5 +13,5 @@
  * - "`stripIfInteger`": the result with more precision wins a conflict;
  * - "`lessPrecision`": same as "auto", but remove the fraction digits if they are all zero.
  */
-export type TrailingZeroDisplay = "auto" | "stripIfInteger" | "lessPrecision";
-export default TrailingZeroDisplay;
+export type FormatTrailingZeroDisplay = "auto" | "stripIfInteger" | "lessPrecision";
+export default FormatTrailingZeroDisplay;

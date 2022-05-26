@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -9,9 +9,9 @@
 /**
  * A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of
  * the locales argument, see the
- * [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page.
+ * [Intl page on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
  */
-export type Locale =
+export type FormatLocale =
     | "af-ZA"
     | "am-ET"
     | "ar-AE"
@@ -244,4 +244,4 @@ export type Locale =
 
 // eslint-disable-next-line
 type LocaleString = string & {};
-export default Locale;
+export default FormatLocale;

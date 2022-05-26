@@ -1,14 +1,14 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
  * https://github.com/pjbatista/decimal.js-i18n
  */
 import Decimal from "decimal.js";
-import type Currency from "./currency";
-import type Locale from "./locale";
-import type NumberingSystem from "./numberingSystem";
+import type FormatCurrency from "./currency";
+import type FormatLocale from "./locale";
+import type FormatNumberingSystem from "./numberingSystem";
 
 /** Format extension used to create large integers with user-defined grouping. */
 export const BIGINT_MODIFIERS = {
@@ -44,7 +44,7 @@ export const DEFAULT_OPTIONS = {
     maximumFractionDigits: 3,
     minimumFractionDigits: 0,
     minimumIntegerDigits: 1,
-    maximumSignificantDigits: DECIMAL_LIMIT,
+    maximumSignificantDigits: 21,
     minimumSignificantDigits: 1,
     notation: "standard",
     rounding: Decimal.ROUND_HALF_EVEN,
@@ -54,8 +54,8 @@ export const DEFAULT_OPTIONS = {
     trailingZeroDisplay: "auto",
 } as const;
 
-/** A big list of {@link Currency currencies}, containing most of the standard currencies of the world. */
-export const CURRENCIES: ReadonlyArray<Currency> = [
+/** A big list of {@link FormatCurrency currencies}, containing most of the standard currencies of the world. */
+export const CURRENCIES: ReadonlyArray<FormatCurrency> = [
     "AED",
     "AFN",
     "ALL",
@@ -216,8 +216,8 @@ export const CURRENCIES: ReadonlyArray<Currency> = [
     "ZWD",
 ] as const;
 
-/** A big list of BCP 47 {@link Locale locales}, used for the new method `Decimal.Format.supportedLocales` */
-export const LOCALES: ReadonlyArray<Locale> = [
+/** A big list of BCP 47 {@link FormatLocale locales}, used for the new method `Decimal.Format.supportedLocales` */
+export const LOCALES: ReadonlyArray<FormatLocale> = [
     "af-ZA",
     "am-ET",
     "ar-AE",
@@ -448,8 +448,8 @@ export const LOCALES: ReadonlyArray<Locale> = [
     "zu-ZA",
 ] as const;
 
-/** A big list of {@link NumberingSystem numbering systems} representing multiple regions of the world. */
-export const NUMBERING_SYSTEMS: ReadonlyArray<NumberingSystem> = [
+/** A big list of {@link FormatNumberingSystem numbering systems} representing multiple regions of the world. */
+export const NUMBERING_SYSTEMS: ReadonlyArray<FormatNumberingSystem> = [
     "adlm",
     "ahom",
     "arab",

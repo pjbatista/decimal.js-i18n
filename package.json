@@ -1,7 +1,7 @@
 {
     "name": "decimal.js-i18n-dev",
     "description": "Full internationalization support for decimal.js.",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "private": true,
     "keywords": [
         "number",
@@ -33,7 +33,11 @@
     "homepage": "https://github.com/pjbatista/decimal.js-i18n/blob/master/README.md",
     "scripts": {
         "build": "node build",
-        "test": "mocha -r ts-node/register -r tsconfig-paths/register -b tests/**/*.test.ts"
+        "coverage": "nyc mocha --exit -r ts-node/register -r tsconfig-paths/register --ignore tests/randomized.test.ts tests/**/*.test.ts",
+        "test": "mocha --bail -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts"
+    },
+    "engines": {
+        "node": ">=12"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^22.0.0",
@@ -57,6 +61,7 @@
         "fs-extra": "^10.1.0",
         "jszip": "^3.10.0",
         "mocha": "^10.0.0",
+        "nyc": "^15.1.0",
         "prettier": "^2.6.2",
         "prettier-eslint": "^15.0.0",
         "prettier-plugin-jsdoc": "^0.3.38",

@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -13,7 +13,7 @@
  * code list](https://iso.org/iso-4217-currency-codes.html).
  */
 /* eslint-enable max-len */
-export type Currency =
+export type FormatCurrency =
     | "AED"
     | "AFN"
     | "ALL"
@@ -176,4 +176,4 @@ export type Currency =
 
 // eslint-disable-next-line
 type CurrencyString = string & {};
-export default Currency;
+export default FormatCurrency;

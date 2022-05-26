@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -14,5 +14,5 @@
  * - "`code`" to use the ISO currency code;
  * - "`name`" to use a localized currency name such as "dollar".
  */
-export type CurrencyDisplay = "symbol" | "narrowSymbol" | "code" | "name";
-export default CurrencyDisplay;
+export type FormatCurrencyDisplay = "symbol" | "narrowSymbol" | "code" | "name";
+export default FormatCurrencyDisplay;

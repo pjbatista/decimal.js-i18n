@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -7,5 +7,5 @@
  */
 
 /** String that describes the approach taken by the formatters in order to achieve a target locale. */
-export type LocaleMatcher = "best fit" | "lookup";
-export default LocaleMatcher;
+export type FormatLocaleMatcher = "best fit" | "lookup";
+export default FormatLocaleMatcher;

@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -11,5 +11,5 @@
  * minus sign. You can enable this formatting by setting the currencySign option to "`accounting`". The
  * default value is "`standard`".
  */
-export type CurrencySign = "standard" | "accounting";
-export default CurrencySign;
+export type FormatCurrencySign = "standard" | "accounting";
+export default FormatCurrencySign;

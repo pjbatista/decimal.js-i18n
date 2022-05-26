@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -15,5 +15,5 @@
  * - "`negative`" sign display for negative numbers only, excluding negative zero;
  * - "`never`" never display sign.
  */
-export type SignDisplay = "auto" | "never" | "always" | "exceptZero" | "negative";
-export default SignDisplay;
+export type FormatSignDisplay = "auto" | "never" | "always" | "exceptZero" | "negative";
+export default FormatSignDisplay;

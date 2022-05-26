@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -15,5 +15,5 @@
  * - "`min2`": display grouping separators when there are at least 2 digits in a group;
  * - "`true`"/`true`: alias for always.
  */
-export type UseGrouping = boolean | "always" | "auto" | "false" | "min2" | "true";
-export default UseGrouping;
+export type FormatUseGrouping = boolean | "always" | "auto" | "false" | "min2" | "true";
+export default FormatUseGrouping;

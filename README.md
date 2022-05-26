@@ -1,4 +1,4 @@
-<h1>    
+<h1>
     <a href="https://github.com/pjbatista/decimal.js-i18n">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only">
@@ -7,6 +7,8 @@
         </picture>
     </a>
 </h1>
+
+![github top language](https://img.shields.io/github/languages/top/pjbatista/decimal.js-i18n)
 
 > Full internationalization support for [decimal.js](https://github.com/MikeMcl/decimal.js).
 
@@ -72,27 +74,25 @@ require(["decimal.js"], Decimal => { /* ... */ });
 ```html
 <script src="./scripts/decimal[.min].[m]js" />
 <script src="./scripts/decimal-i18n[.min].[m]js" />
-<!-- redundancy prevention:   ^ no .js here -->
 ```
 
 **Extending manually:**
 
 ```javascript
 const extend = require("decimal.js-i18n/extend");
-const Decimal = extend(require("decimal.js"));
+const Decimal = extend(require("custom-decimal.js"));
 ```
 
 ---
 
-From now on, the method `toLocaleString` will available to `Decimal` instances.
-
+From now on, the method `toLocaleString` will available on the `Decimal` prototype:
 
 ```javascript
-largeDecimal.toLocaleString('ar', { maximumFractionDigits: 50 });
+myDecimal.toLocaleString('ar', { maximumFractionDigits: 50 });
 // Returns: ٣٩٬٣٣٤٬٤١٥٬٩٤٦٬٧٣٧٬١٠٥٫٤٢٢٢٩٨٤٩٦٩٦٣٩٧٠٩١٥٦٨٢٩٣٩٩٢٠٠١٥٤٦٤٦٥٥١٤٤٨٨٨١٣٦٢٣٤٥٢
 ```
 
-The backbone of the module, however is the `Decimal.Format` class — to be used when translating multiple values for an increase in performance  —  which behaves exactly like [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.NumberFormat), without its 20/21 digits limitations:
+The backbone of the module, however is the `Decimal.Format` class — to be used when translating multiple values for an increase in performance  —  which behaves pretty much like [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.NumberFormat), without its 20/21 digits limitations and with the increase in precision of `decimal.js`:
 
 ```javascript
 const formatter = new Decimal.Format("lao", {
@@ -134,7 +134,7 @@ The constructor for `Decimal.Format` and `Decimal.prototype.toLocaleString` are 
 
 **locales**: `string` | `string[]`
 
-<sup>(optional)</sup> A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the locales argument, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page. The system default locale is used when omitted.
+<sup>(optional)</sup> A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the locales argument, see the [Intl page on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl). The system default locale is used when omitted.
 
 **options**: `object`
 
@@ -144,15 +144,23 @@ The constructor for `Decimal.Format` and `Decimal.prototype.toLocaleString` are 
 
 ## Options
 
-#### compactDisplay › "`short`" | "`long`"
+All configuration values are optional, but a few can become required depending of the [`style`](#style). Some configurations may not be available on all browsers.
 
-Only used when [notation](#notation) is "`compact`". Takes either "`short`" (default) or "`long`".
+### compactDisplay
 
-#### currency › `string`
+> ▸ "`short`" | "`long`"
 
-The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "`USD`" for the US dollar, "`EUR`" for the euro, or "`CNY`" for the Chinese RMB — see the [Current currency & funds code list](https://iso.org/iso-4217-currency-codes.html). There is **no default value**; if the [style](#style) is "`currency`", the `currency` property must be provided.
+Only used when [`notation`](#notation) is "`compact`". Takes either "`short`" (default) or "`long`".
 
-#### currencyDisplay › "`symbol`" | "`narrowSymbol`" | "`code`" | "`name`"
+### currency
+
+> ▸ `string`
+
+The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "`USD`" for the US dollar, "`EUR`" for the euro, or "`CNY`" for the Chinese RMB — see the [Current currency & funds code list](https://iso.org/iso-4217-currency-codes.html). There is **no default value**; if the [`style`](#style) is "`currency`", the `currency` property must be provided.
+
+### currencyDisplay
+
+> ▸ "`symbol`" | "`narrowSymbol`" | "`code`" | "`name`"
 
 How to display the currency in currency formatting. Possible values are:
 
@@ -161,15 +169,21 @@ How to display the currency in currency formatting. Possible values are:
 - "`code`" to use the ISO currency code;
 - "`name`" to use a localized currency name such as "dollar".
 
-#### currencySign › "`standard`" | "`accounting`"
+### currencySign
+
+> ▸ "`standard`" | "`accounting`"
 
 In many locales, accounting format means to wrap the number with parentheses instead of appending a minus sign. You can enable this formatting by setting the currencySign option to "`accounting`". The default value is "`standard`".
 
-#### localeMatcher › "`best fit`" | "`lookup`"
+### localeMatcher
 
-The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is "`best fit`". For information about this option, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page.
+> ▸ "`best fit`" | "`lookup`"
 
-#### notation › "`standard`" | "`scientific`" | "`engineering`" | "`compact`"
+The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is "`best fit`". For information about this option, see the [Intl page on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
+
+### notation
+
+> ▸ "`standard`" | "`scientific`" | "`engineering`" | "`compact`"
 
 The formatting that should be displayed for the number, the defaults is "`standard`".
 
@@ -178,17 +192,23 @@ The formatting that should be displayed for the number, the defaults is "`standa
 - "`engineering`" return the exponent of ten when divisible by three;
 - "`compact`" string representing exponent; defaults to using the "short" form.
 
-#### numberingSystem › `string`
+### numberingSystem
+
+> ▸ `string`
 
 A numeral system is a system for expressing numbers. The numberingSystem property helps to represent the different numeral systems used by various countries, regions, and cultures around the world.
 
 See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.Locale.prototype.numberingSystem](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.Locale.prototype.numberingSystem) for more information.
 
-#### rounding › [`Decimal.Rounding`](https://mikemcl.github.io/decimal.js/#modes)
+### rounding
+
+> ▸ [`Decimal.Rounding`](https://mikemcl.github.io/decimal.js/#modes)
 
 Options for rounding modes reflecting the [ICU user guide](https://unicode-org.github.io/icu/userguide/format_parse/numbers/rounding-modes.html). Used in this plugin as in `decimal.js`.
 
-#### signDisplay › "`auto`" | "`never`" | "`always`" | "`exceptZero`" | "`negative`"
+### signDisplay
+
+> ▸ "`auto`" | "`never`" | "`always`" | "`exceptZero`" | "`negative`"
 
 When to display the sign for the number; defaults to "`auto`":
 
@@ -198,7 +218,9 @@ When to display the sign for the number; defaults to "`auto`":
 - "`negative`" sign display for negative numbers only, excluding negative zero;
 - "`never`" never display sign.
 
-#### style › "`currency`" | "`unit`" | "`decimal`" | "`percent`"
+### style
+
+> ▸ "`currency`" | "`unit`" | "`decimal`" | "`percent`"
 
 The formatting style to use , the default is "`decimal`".
 
@@ -207,23 +229,31 @@ The formatting style to use , the default is "`decimal`".
 - "`percent`" for percent formatting;
 - "`unit`" for [unit](#unit) formatting.
 
-#### trailingZeroDisplay › "`auto`" | "`stripIfInteger`" | "`lessPrecision`"
+### trailingZeroDisplay
+
+> ▸ "`auto`" | "`stripIfInteger`" | "`lessPrecision`"
 
 A string expressing the strategy for displaying trailing zeros on whole numbers. The default is "`auto`".
 
-- "`auto`": keep trailing zeros according to [minimumFractionDigits](#minimumFractionDigits) and [minimumSignificantDigits](#minimumSignificantDigits);
+- "`auto`": keep trailing zeros according to [`minimumFractionDigits`](#minimumFractionDigits) and [`minimumSignificantDigits`](#minimumSignificantDigits);
 - "`stripIfInteger`": the result with more precision wins a conflict;
 - "`lessPrecision`": same as "auto", but remove the fraction digits if they are all zero.
 
-#### unit › `string`
+### unit
+
+> ▸ `string`
 
 The unit to use in unit formatting, possible values are core unit identifiers. Only a [subset](https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-issanctionedsimpleunitidentifier) of units from the full list was selected for use in ECMAScript. Pairs of simple units can be concatenated with "`-per-`" to make a compound unit. There is **no default value**; if the [style](#style) is "`unit`", the `unit` property must be provided.
 
-#### unitDisplay › "`short`" | "`long`" | "`narrow`"
+### unitDisplay
+
+> ▸ "`short`" | "`long`" | "`narrow`"
 
 The unit formatting style to use in [unit](#unit) formatting, the defaults is "`short`". Can be "`long`", "`narrow`" or "`short`".
 
-#### useGrouping › `boolean` | "`auto`" | "`always`" | "`false`" | "`min2`" | "`true`"
+### useGrouping
+
+> ▸ `boolean` | "`auto`" | "`always`" | "`false`" | "`min2`" | "`true`"
 
 Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. The default is "`auto`".
 
@@ -235,29 +265,37 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ---
 
-**Important:** The following properties fall into two groups: [maximumFractionDigits](#maximumFractionDigits), [minimumFractionDigits](#minimumFractionDigits), and [minimumIntegerDigits](#minimumIntegerDigits) in one group, [maximumSignificantDigits](#maximumSignificantDigits) and [minimumSignificantDigits](#minimumSignificantDigits) in the other. If at least one property from the second group is defined, then the first group is ignored.
+👉 The following properties fall into two groups: [`maximumFractionDigits`](#maximumFractionDigits), [`minimumFractionDigits`](#minimumFractionDigits), and [`minimumIntegerDigits`](#minimumIntegerDigits) in one group, [`maximumSignificantDigits`](#maximumSignificantDigits) and [`minimumSignificantDigits`](#minimumSignificantDigits) in the other. If at least one property from the second group is defined, then the first group <u>**is ignored**</u>.
 
----
+### maximumFractionDigits
 
-#### maximumFractionDigits › `number`
+> ▸ `number`
 
-¹ The maximum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number formatting is the larger of [minimumFractionDigits](#minimumFractionDigits) and 3; the default for currency formatting is the larger of `minimumFractionDigits` and the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information); the default for percent formatting is the larger of `minimumFractionDigits` and 0.
+₁ The maximum number of fraction digits to use. This allows any positive integer value up to `999999999`, including; the default for plain number formatting is the larger of [`minimumFractionDigits`](#minimumFractionDigits) and `3`; the default for currency formatting is the larger of `minimumFractionDigits` and the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (`2` if the list doesn't provide that information); the default for percent formatting is the larger of `minimumFractionDigits` and `0`.
 
-#### minimumFractionDigits › `number`
+### minimumFractionDigits
 
-¹ The minimum number of fraction digits to use. Unlike `Intl.NumberFormat`, this allows any integer value up to 999999999; the default for plain number and percent formatting is 0; the default for currency formatting is the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (2 if the list doesn't provide that information).
+> ▸ `number`
 
-#### minimumIntegerDigits › `number`
+₁ The minimum number of fraction digits to use. This allows any positive integer value up to `999999999`, including; the default for plain number and percent formatting is `0`; the default for currency formatting is the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (`2` if the list doesn't provide that information).
 
-¹ The minimum number of integer digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
+### minimumIntegerDigits
 
-#### maximumSignificantDigits › `number`
+> ▸ `number`
 
-² The maximum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 21.
+₁ The minimum number of integer digits to use. This allows any positive natural value up to `1000000000`, including; the default is `1`.
 
-#### minimumSignificantDigits › `number`
+### maximumSignificantDigits
 
-² The minimum number of significant digits to use. Unlike `Intl.NumberFormat`, this allows any natural value up to 1000000000, including; the default is 1.
+> ▸ `number`
+
+₂ The maximum number of significant digits to use. This allows any positive natural value up to `1000000000`, including; the default is the larger of [`minimumFractionDigits`](#minimumFractionDigits) and `21`.
+
+### minimumSignificantDigits
+
+> ▸ `number`
+
+₂ The minimum number of significant digits to use. This allows any positive natural value up to `1000000000`, including; the default is `1`.
 
 [<sub>⇧ back to top</sub>](#summary)
 
@@ -272,6 +310,16 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 [<sub>⇧ back to top</sub>](#summary)
 
 ## Changelog
+
+### TODO: Decide on next version
+
+Improve distribution, type aliasing, and docs.
+
+- Add generic typing to `notation` and `style`.
+- No longer require node ≥ 15 (package as es5).
+- Standardize documentation on doc blocks.
+- Standardize documentation on README.md.
+- Prepare repository for scrutinizer.
 
 ### v0.2.4-v0.2.5 (2022-05-24)
 
@@ -305,7 +353,7 @@ First version.
 
 ## Disclaimer and License
 
-This project **IS NOT** endorsed or supported by `decimal.js`, or any of its contributors. 
+This project **IS NOT** endorsed or supported by `decimal.js`, or any of its contributors.
 
 `decimal.js-i18n` is licensed under the MIT License. See [LICENSE.md](https://github.com/pjbatista/decimal.js-i18n/blob/master/serialize/LICENSE.md) for more information.
 

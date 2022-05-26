@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -8,6 +8,7 @@
 /* eslint-disable @typescript-eslint/naming-convention,@typescript-eslint/no-unsafe-argument */
 import Decimal from "decimal.js";
 import Format from "./format";
+import type { FormatLocale, FormatOptions, FormatNotation, FormatStyle } from "./format";
 
 const main = (Decimal: Decimal.Constructor) => {
     // Do not attempt to redefine the module, if already extended
@@ -28,13 +29,20 @@ declare module "decimal.js" {
         /**
          * Returns a string with a language-sensitive representation of this decimal number.
          *
-         * @param locales A string with a BCP 47 language tag, or an array of such strings. For the general
-         *   form and interpretation of the locales argument, see the
-         *   [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) page.
+         * @template TNotation Numeric notation of formatting.
+         * @template TStyle Numeric style of formatting.
+         * @param locales A string with a [BCP 47](https://www.rfc-editor.org/info/bcp47) language tag, or an
+         *   array of such strings.
+         *
+         *   For the general form and interpretation of this parameter, see the [Intl page on
+         *   MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
          * @param options Object used to configure the behavior of the string localization.
-         * @returns Formatted localized string.
+         * @returns A localized and formatted string.
          */
-        toLocaleString: (locales?: Format.Locale | Format.Locale[], options?: Format.FormatOptions) => string;
+        toLocaleString: <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
+            locales?: FormatLocale | FormatLocale[],
+            options?: FormatOptions<TNotation, TStyle>,
+        ) => string;
     }
 
     // In order to appropriately represent the Format class, it needs to be placed on Decimal as a 'static' member:

@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -14,5 +14,5 @@
  * - "`percent`" for percent formatting;
  * - "`unit`" for unit formatting.
  */
-export type Style = "decimal" | "currency" | "percent" | "unit";
-export default Style;
+export type FormatStyle = "decimal" | "currency" | "percent" | "unit";
+export default FormatStyle;

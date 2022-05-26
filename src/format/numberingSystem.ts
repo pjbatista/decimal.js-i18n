@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -12,7 +12,7 @@
  *
  * See the [numberingSystem](https://mdn.io/Intl.Locale.prototype.numberingSystem) page for more information.
  */
-export type NumberingSystem =
+export type FormatNumberingSystem =
     | "adlm"
     | "ahom"
     | "arab"
@@ -103,4 +103,4 @@ export type NumberingSystem =
 
 // eslint-disable-next-line
 type NumberingSystemString = string & {};
-export default NumberingSystem;
+export default FormatNumberingSystem;

@@ -10,6 +10,7 @@ module.exports = {
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:jsdoc/recommended",
         "prettier",
     ],
     parser: "@typescript-eslint/parser",
@@ -56,7 +57,7 @@ module.exports = {
                 selector: "variable",
             },
             {
-                format: ["camelCase", "PascalCase", "UPPER_CASE"],
+                format: ["camelCase", "PascalCase"],
                 selector: "function",
             },
             {
@@ -77,13 +78,21 @@ module.exports = {
         ],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unsafe-assignment": "off",
-        "@typescript-eslint/triple-slash-reference": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         indent: "off",
         "jsdoc/check-indentation": "off",
+        "jsdoc/check-param-names": ["error", {  checkDestructured: false }],
+        "jsdoc/check-tag-names": ["error", { definedTags: ["precision"] }],
         "jsdoc/no-undefined-types": "error",
+        "jsdoc/require-param": ["error", { checkDestructured: false }],
+        "jsdoc/require-param-type": "off",
+        "jsdoc/require-returns-type": "off",
         "linebreak-style": ["error", "unix"],
         "max-len": ["error", 120],
         quotes: ["error", "double"],
-        semi: "error"
+        semi: "error",
+    },
+    settings: {
+        jsdoc: { mode: "typescript" },
     },
 };

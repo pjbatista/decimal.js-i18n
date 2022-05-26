@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -98,7 +98,7 @@ export const randomOptionsCombinations = (ecma = false) => {
         { style: "currency", currency: [...currencies], currencyDisplay: ["symbol", "narrowSymbol", "code", "name"] },
         { style: "unit", unit: [...units], unitDisplay: ["long", "narrow", "short"] },
     ] as const;
-    const result: FormatOptions[] = [{}];
+    const result: FormatOptions<any, any>[] = [{}];
 
     for (let i = 0; i < 30; i++) result.push({ ...decimalStyle, ...randomVariant(ecma) });
     for (let i = 0; i < 30; i++) result.push({ ...percentStyle, ...randomVariant(ecma) });

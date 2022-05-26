@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -10,5 +10,5 @@
  * The unit formatting style to use in {@link unit} formatting, the defaults is "`short`". Can be "`long`",
  * "`narrow`" or "`short`".
  */
-export type UnitDisplay = "long" | "narrow" | "short";
-export default UnitDisplay;
+export type FormatUnitDisplay = "long" | "narrow" | "short";
+export default FormatUnitDisplay;

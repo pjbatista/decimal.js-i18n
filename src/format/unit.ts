@@ -1,5 +1,5 @@
 /*
- * decimal.js-i18n v0.2.5
+ * decimal.js-i18n v0.2.6
  * Full internationalization support for decimal.js.
  * MIT License
  * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
@@ -15,7 +15,7 @@
  * [1]: https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-issanctionedsimpleunitidentifier
  */
 /* eslint-enable max-len */
-export type Unit =
+export type FormatUnit =
     | "acre"
     | "bit"
     | "byte"
@@ -63,4 +63,4 @@ export type Unit =
 
 // eslint-disable-next-line
 type UnitString = string & {};
-export default Unit;
+export default FormatUnit;
