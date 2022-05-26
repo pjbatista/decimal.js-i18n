@@ -33,7 +33,9 @@
     "homepage": "https://github.com/pjbatista/decimal.js-i18n/blob/master/README.md",
     "scripts": {
         "build": "node build",
-        "coverage": "nyc mocha --exit -r ts-node/register -r tsconfig-paths/register --ignore tests/randomized.test.ts tests/**/*.test.ts",
+        "coverage": "run-s coverage:test coverage:report",
+        "coverage:report": "nyc report -r clover",
+        "coverage:test": "nyc mocha --exit -r ts-node/register -r tsconfig-paths/register --ignore tests/randomized.test.ts tests/**/*.test.ts",
         "test": "mocha --bail -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts"
     },
     "engines": {
@@ -60,6 +62,7 @@
         "fs-extra": "^10.1.0",
         "jszip": "^3.10.0",
         "mocha": "^10.0.0",
+        "npm-run-all": "^4.1.5",
         "nyc": "^15.1.0",
         "prettier": "^2.6.2",
         "prettier-eslint": "^15.0.0",
