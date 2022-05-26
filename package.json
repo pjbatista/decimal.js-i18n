@@ -51,7 +51,6 @@
         "chai": "^4.3.6",
         "chai-subset": "^1.6.0",
         "chalk": "^5.0.1",
-        "clone-class": "^1.0.3",
         "decimal.js": "^10.3.1",
         "eslint": "^8.16.0",
         "eslint-config-prettier": "^8.5.0",

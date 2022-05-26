@@ -7,11 +7,14 @@
  */
 import Format, { FormatOptions } from "@/format";
 import * as constants from "@/format/constants";
-import { cloneClass } from "clone-class";
 import Decimal from "decimal.js";
 
 export { Decimal };
-export const getDecimalClone = () => cloneClass(Decimal);
+export const getDecimalClone = () => {
+    const result = Object.assign({}, Decimal);
+    result.prototype = Decimal.prototype;
+    return result;
+};
 export const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
 export const toString = (target: object) => Object.prototype.toString.call(target);
 

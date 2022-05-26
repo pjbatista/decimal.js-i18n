@@ -903,11 +903,6 @@ cliui@^7.0.2:
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
 
-clone-class@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/clone-class/-/clone-class-1.0.3.tgz#5ba84a165878e11600f14e1fcf7e61265a576485"
-  integrity sha512-w61XkwjxiT3ZRKIO8ENg4btl4qScSUU9tjdcLrUO16d7uiKA9reJK4bBgZZT5iFII06E/WsV3rAyEnxq4njmOw==
-
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
