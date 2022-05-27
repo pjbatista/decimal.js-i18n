@@ -88,8 +88,13 @@ const Decimal = extend(require("custom-decimal.js"));
 From now on, the method `toLocaleString` will available on the `Decimal` prototype:
 
 ```javascript
-myDecimal.toLocaleString('ar', { maximumFractionDigits: 50 });
-// Returns: ٣٩٬٣٣٤٬٤١٥٬٩٤٦٬٧٣٧٬١٠٥٫٤٢٢٢٩٨٤٩٦٩٦٣٩٧٠٩١٥٦٨٢٩٣٩٩٢٠٠١٥٤٦٤٦٥٥١٤٤٨٨٨١٣٦٢٣٤٥٢
+pi.toLocaleString('ar', { 
+    minimumSignificantDigits: 100, 
+    notation: "engineering", 
+    style: "unit", 
+    unit: "kilometer-per-hour",
+});
+// Returns: ٣٫١٤١٥٩٢٦٥٣٥٨٩٧٩٣٢٣٨٤٦٢٦٤٣٣٨٣٢٧٩٥٠٢٨٨٤١٩٧١٦٩٣٩٩٣٧٥١٠٥٨٢٠٩٧٤٩٤٤٥٩٢٣٠٧٨١٦٤٠٦٢٨٦٢٠٨٩٩٨٦٢٨٠٣٤٨٢٥٣٤٢١١٧٠٧٠اس٠ كم/س
 ```
 
 The backbone of the module, however is the `Decimal.Format` class — to be used when translating multiple values for an increase in performance  —  which behaves pretty much like [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl.NumberFormat), without its 20/21 digits limitations and with the increase in precision of `decimal.js`:
@@ -108,7 +113,7 @@ formatter.format(-1 / 3);
 // Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐
 
 formatter.format(new Decimal(-1).div(3));
-// Returns: US$-໐,໐໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
+// Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
 
 formatter.format(new Decimal("1.65e51").div(3).cbrt());
 // Returns US$໘໑.໙໓໒.໑໒໗.໐໖໐.໐໖໔.໕໘໐,໐໙໓໗໙໕໐໗໑໒໘໖໒໘໕໗໙໙໗໓໓໓໙໑໐໓໓໘໗໐໔໕໔
@@ -148,19 +153,19 @@ All configuration values are optional, but a few can become required depending o
 
 ### compactDisplay
 
-> ▸ "`short`" | "`long`"
+▸ "`short`" | "`long`"
 
 Only used when [`notation`](#notation) is "`compact`". Takes either "`short`" (default) or "`long`".
 
 ### currency
 
-> ▸ `string`
+▸ `string`
 
 The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "`USD`" for the US dollar, "`EUR`" for the euro, or "`CNY`" for the Chinese RMB — see the [Current currency & funds code list](https://iso.org/iso-4217-currency-codes.html). There is **no default value**; if the [`style`](#style) is "`currency`", the `currency` property must be provided.
 
 ### currencyDisplay
 
-> ▸ "`symbol`" | "`narrowSymbol`" | "`code`" | "`name`"
+▸ "`symbol`" | "`narrowSymbol`" | "`code`" | "`name`"
 
 How to display the currency in currency formatting. Possible values are:
 
@@ -171,19 +176,19 @@ How to display the currency in currency formatting. Possible values are:
 
 ### currencySign
 
-> ▸ "`standard`" | "`accounting`"
+▸ "`standard`" | "`accounting`"
 
 In many locales, accounting format means to wrap the number with parentheses instead of appending a minus sign. You can enable this formatting by setting the currencySign option to "`accounting`". The default value is "`standard`".
 
 ### localeMatcher
 
-> ▸ "`best fit`" | "`lookup`"
+▸ "`best fit`" | "`lookup`"
 
 The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is "`best fit`". For information about this option, see the [Intl page on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
 ### notation
 
-> ▸ "`standard`" | "`scientific`" | "`engineering`" | "`compact`"
+▸ "`standard`" | "`scientific`" | "`engineering`" | "`compact`"
 
 The formatting that should be displayed for the number, the defaults is "`standard`".
 
@@ -194,7 +199,7 @@ The formatting that should be displayed for the number, the defaults is "`standa
 
 ### numberingSystem
 
-> ▸ `string`
+▸ `string`
 
 A numeral system is a system for expressing numbers. The numberingSystem property helps to represent the different numeral systems used by various countries, regions, and cultures around the world.
 
@@ -202,13 +207,13 @@ See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 
 ### rounding
 
-> ▸ [`Decimal.Rounding`](https://mikemcl.github.io/decimal.js/#modes)
+▸ [`Decimal.Rounding`](https://mikemcl.github.io/decimal.js/#modes)
 
 Options for rounding modes reflecting the [ICU user guide](https://unicode-org.github.io/icu/userguide/format_parse/numbers/rounding-modes.html). Used in this plugin as in `decimal.js`.
 
 ### signDisplay
 
-> ▸ "`auto`" | "`never`" | "`always`" | "`exceptZero`" | "`negative`"
+▸ "`auto`" | "`never`" | "`always`" | "`exceptZero`" | "`negative`"
 
 When to display the sign for the number; defaults to "`auto`":
 
@@ -220,7 +225,7 @@ When to display the sign for the number; defaults to "`auto`":
 
 ### style
 
-> ▸ "`currency`" | "`unit`" | "`decimal`" | "`percent`"
+▸ "`currency`" | "`unit`" | "`decimal`" | "`percent`"
 
 The formatting style to use , the default is "`decimal`".
 
@@ -231,7 +236,7 @@ The formatting style to use , the default is "`decimal`".
 
 ### trailingZeroDisplay
 
-> ▸ "`auto`" | "`stripIfInteger`" | "`lessPrecision`"
+▸ "`auto`" | "`stripIfInteger`" | "`lessPrecision`"
 
 A string expressing the strategy for displaying trailing zeros on whole numbers. The default is "`auto`".
 
@@ -241,19 +246,19 @@ A string expressing the strategy for displaying trailing zeros on whole numbers.
 
 ### unit
 
-> ▸ `string`
+▸ `string`
 
-The unit to use in unit formatting, possible values are core unit identifiers. Only a [subset](https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-issanctionedsimpleunitidentifier) of units from the full list was selected for use in ECMAScript. Pairs of simple units can be concatenated with "`-per-`" to make a compound unit. There is **no default value**; if the [style](#style) is "`unit`", the `unit` property must be provided.
+The unit to use in unit formatting, possible values are core unit identifiers. Only a [subset](https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-issanctionedsimpleunitidentifier) of units from the full list was selected for use in ECMAScript. Pairs of simple units can be concatenated with "`-per-`" to make a compound unit. There is **no default value**; if the [`style`](#style) is "`unit`", the `unit` property must be provided.
 
 ### unitDisplay
 
-> ▸ "`short`" | "`long`" | "`narrow`"
+▸ "`short`" | "`long`" | "`narrow`"
 
 The unit formatting style to use in [unit](#unit) formatting, the defaults is "`short`". Can be "`long`", "`narrow`" or "`short`".
 
 ### useGrouping
 
-> ▸ `boolean` | "`auto`" | "`always`" | "`false`" | "`min2`" | "`true`"
+▸ `boolean` | "`auto`" | "`always`" | "`false`" | "`min2`" | "`true`"
 
 Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. The default is "`auto`".
 
@@ -269,31 +274,31 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 
 ### maximumFractionDigits
 
-> ▸ `number`
+▸ `number`
 
 ₁ The maximum number of fraction digits to use. This allows any positive integer value up to `999999999`, including; the default for plain number formatting is the larger of [`minimumFractionDigits`](#minimumFractionDigits) and `3`; the default for currency formatting is the larger of `minimumFractionDigits` and the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (`2` if the list doesn't provide that information); the default for percent formatting is the larger of `minimumFractionDigits` and `0`.
 
 ### minimumFractionDigits
 
-> ▸ `number`
+▸ `number`
 
 ₁ The minimum number of fraction digits to use. This allows any positive integer value up to `999999999`, including; the default for plain number and percent formatting is `0`; the default for currency formatting is the number of minor unit digits provided by the [ISO 4217 currency code list](https://www.currency-iso.org/en/home/tables/table-a1.html) (`2` if the list doesn't provide that information).
 
 ### minimumIntegerDigits
 
-> ▸ `number`
+▸ `number`
 
 ₁ The minimum number of integer digits to use. This allows any positive natural value up to `1000000000`, including; the default is `1`.
 
 ### maximumSignificantDigits
 
-> ▸ `number`
+▸ `number`
 
 ₂ The maximum number of significant digits to use. This allows any positive natural value up to `1000000000`, including; the default is the larger of [`minimumFractionDigits`](#minimumFractionDigits) and `21`.
 
 ### minimumSignificantDigits
 
-> ▸ `number`
+▸ `number`
 
 ₂ The minimum number of significant digits to use. This allows any positive natural value up to `1000000000`, including; the default is `1`.
 

@@ -244,13 +244,12 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
 
                 let suffix = "";
 
-                const targetDigits = maxFD - 1;
                 // Exponential value of the fraction (converting from decimal to bigint)
-                const exponential = fraction.toDP(targetDigits, rounding).mul(pow10(targetDigits)).toFixed();
+                const exponential = fraction.toDP(maxFD, rounding).mul(pow10(maxFD)).toFixed();
 
                 // First, create a zero-filled right-side expansion if the digits are insufficient
                 if (fractionDigits < minFD) {
-                    suffix = zeroFill(minFD - targetDigits);
+                    suffix = zeroFill(minFD - maxFD);
                 }
 
                 const fractionValue = plainFormat.format(BigInt(exponential)) + suffix;
@@ -258,6 +257,10 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
                 // If the value is still not enough, it needs more left-zero-filling
                 if (fractionValue.length < minFD) {
                     return zeroFill(minFD - fractionValue.length) + fractionValue;
+                }
+                // If it's bigger than the maximum, slice it
+                else if (fractionValue.length > maxFD) {
+                    return fractionValue.slice(0, maxFD);
                 }
 
                 return fractionValue;

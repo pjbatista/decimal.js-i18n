@@ -44,8 +44,8 @@
     // #region Window color
 
     "workbench.colorCustomizations": {
-        "activityBar.background": "#344234",
-        "titleBar.activeBackground": "#344234",
+        "activityBar.background": "#546440",
+        "titleBar.activeBackground": "#546440",
         "titleBar.activeForeground": "#FEFBFB"
     },
 
