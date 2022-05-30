@@ -534,3 +534,6 @@ export const NUMBERING_SYSTEMS: ReadonlyArray<FormatNumberingSystem> = [
     "wara",
     "wcho",
 ] as const;
+
+/** Array containing the supported locales of the current environment. */
+export const SUPPORTED_LOCALES: FormatLocale[] = Intl.NumberFormat.supportedLocalesOf(LOCALES as string[]);

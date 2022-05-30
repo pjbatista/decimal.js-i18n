@@ -5,7 +5,7 @@
 import Decimal from "decimal.js";
 import type BaseFormatOptions from "./baseOptions";
 import type FormatCompactDisplay from "./compactDisplay";
-import { BIGINT_MODIFIERS, ECMA_LIMIT, LOCALES, PLAIN_MODIFIERS } from "./constants";
+import { BIGINT_MODIFIERS, ECMA_LIMIT, PLAIN_MODIFIERS, SUPPORTED_LOCALES } from "./constants";
 import type FormatCurrency from "./currency";
 import type FormatCurrencyDisplay from "./currencyDisplay";
 import type FormatCurrencySign from "./currencySign";
@@ -25,9 +25,6 @@ import type FormatTrailingZeroDisplay from "./trailingZeroDisplay";
 import type FormatUnit from "./unit";
 import type FormatUnitDisplay from "./unitDisplay";
 import type FormatUseGrouping from "./useGrouping";
-
-// Calculates an exponential value using base₁₀
-const defaultLocales = LOCALES.slice();
 
 const concatenate = <T extends PartValue>(filter: T[] | ((p: T) => boolean), parts: T[] = []) => {
     if (typeof filter === "function") {
@@ -306,8 +303,8 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
      *
      * @returns Array of strings with the available locales.
      */
-    static supportedLocales(): FormatLocale[] {
-        return Intl.NumberFormat.supportedLocalesOf(defaultLocales);
+    static supportedLocales() {
+        return SUPPORTED_LOCALES;
     }
 
     /**
