@@ -299,7 +299,7 @@ export class Format<TNotation extends FormatNotation = "standard", TStyle extend
      * Returns an array containing the default locales available to the environment, based on a default
      * dictionary of locales and regions.
      *
-     * **Note:** This method is non-standard and not available on `Intl` formatters.
+     * This method is non-standard method that is not available on `Intl` formatters.
      *
      * @returns Array of strings with the available locales.
      */
