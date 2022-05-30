@@ -128,7 +128,7 @@ const formatMjsExtend = (code: string) =>
 const formatDts = (code: string) => prettify(license + cleanLicenses(code), ".d.ts");
 
 const formatEs5 = (code: string) =>
-    prettify(license + cleanDocBlocks(cleanLicenses(code)).replace(mainEs5RegExp, "main(Decimal);"));
+    prettify(license + cleanDocBlocks(cleanLicenses(code)).replace(mainEs5RegExp, 'main(_decimal["default"]);'));
 
 const formatEsm = (code: string) =>
     prettify(license + cleanDocBlocks(cleanLicenses(code)).replace(mainCallRegExp, "main(Decimal);"));
