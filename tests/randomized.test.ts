@@ -1,9 +1,6 @@
-/*
- * decimal.js-i18n v0.2.6
- * Full internationalization support for decimal.js.
- * MIT License
- * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
- * https://github.com/pjbatista/decimal.js-i18n
+/*!
+ * Copyright (c) 2022 Pedro José Batista, licensed under the MIT License.
+ * See the LICENSE.md file in the project root for more information.
  */
 import { expect, use } from "chai";
 import chaiSubset from "chai-subset";
@@ -24,7 +21,7 @@ describe("Randomized localization test (comparing results to native)", () => {
 
     for (const language of languages.sort()) {
         it(`locale=${language || "undefined"}, 822 randomized options variations, should match native`, function () {
-            this.timeout(10000);
+            this.timeout(5000);
             const ecmaOptionsCombinations = randomOptionsCombinations(true);
             for (const options of ecmaOptionsCombinations) {
                 const decFormat = new Format(language, options);

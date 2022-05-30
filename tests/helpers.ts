@@ -1,20 +1,12 @@
-/*
- * decimal.js-i18n v0.2.6
- * Full internationalization support for decimal.js.
- * MIT License
- * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
- * https://github.com/pjbatista/decimal.js-i18n
+/*!
+ * Copyright (c) 2022 Pedro José Batista, licensed under the MIT License.
+ * See the LICENSE.md file in the project root for more information.
  */
 import Format, { FormatOptions } from "@/format";
 import * as constants from "@/format/constants";
 import Decimal from "decimal.js";
 
 export { Decimal };
-export const getDecimalClone = () => {
-    const result = Object.assign({}, Decimal);
-    result.prototype = Decimal.prototype;
-    return result;
-};
 export const pow10 = (exponent: Decimal.Value) => Decimal.pow(10, exponent);
 export const toString = (target: object) => Object.prototype.toString.call(target);
 
@@ -51,7 +43,12 @@ export { constants, Format };
 
 // Randomization:
 
-export const random = (from = 0, to = 100) => Decimal.random().mul(to - from).floor().add(from).toNumber();
+export const random = (from = 0, to = 100) =>
+    Decimal.random()
+        .mul(to - from)
+        .floor()
+        .add(from)
+        .toNumber();
 
 export const randomVariant = (ecma: boolean) => {
     const result: FormatOptions = {};
@@ -68,8 +65,7 @@ export const randomVariant = (ecma: boolean) => {
         result[key] = array[index] as any;
     }
 
-    const { minimumFractionDigits, minimumIntegerDigits, minimumSignificantDigits, maximumSignificantDigits, maximumFractionDigits }
-        = ecma ? ecmaOptionsDigits : optionsDigits;
+    const { minimumFractionDigits, minimumIntegerDigits, minimumSignificantDigits, maximumSignificantDigits, maximumFractionDigits } = ecma ? ecmaOptionsDigits : optionsDigits;
     let fraction = false;
 
     if (random() >= 50) {
@@ -95,12 +91,7 @@ export const randomVariant = (ecma: boolean) => {
 };
 
 export const randomOptionsCombinations = (ecma = false) => {
-    const [decimalStyle, percentStyle, currencyStyle, unitStyle] = [
-        { style: "decimal" },
-        { style: "percent" },
-        { style: "currency", currency: [...currencies], currencyDisplay: ["symbol", "narrowSymbol", "code", "name"] },
-        { style: "unit", unit: [...units], unitDisplay: ["long", "narrow", "short"] },
-    ] as const;
+    const [decimalStyle, percentStyle, currencyStyle, unitStyle] = [{ style: "decimal" }, { style: "percent" }, { style: "currency", currency: [...currencies], currencyDisplay: ["symbol", "narrowSymbol", "code", "name"] }, { style: "unit", unit: [...units], unitDisplay: ["long", "narrow", "short"] }] as const;
     const result: FormatOptions<any, any>[] = [{}];
 
     for (let i = 0; i < 30; i++) result.push({ ...decimalStyle, ...randomVariant(ecma) });

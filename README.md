@@ -3,7 +3,7 @@
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo-dark.svg#gh-dark-mode-only">
           <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg">
-          <img alt="decimal.js-i18n logo" src="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg">
+          <img alt="decimal.js-i18n" src="https://raw.githubusercontent.com/pjbatista/decimal.js-i18n/main/logo.svg">
         </picture>
     </a>
 </h1>
@@ -85,7 +85,7 @@ const Decimal = extend(require("custom-decimal.js"));
 
 ---
 
-From now on, the method `toLocaleString` will available on the `Decimal` prototype:
+From now on, the method `toLocaleString` will be available on the `Decimal` prototype:
 
 ```javascript
 pi.toLocaleString('ar', { 
@@ -315,6 +315,14 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 [<sub>⇧ back to top</sub>](#summary)
 
 ## Changelog
+
+### v0.3.0 (2022-05-30)
+
+Quality-of-life improvements and fixes.
+
+- Fix balancing of longer decimal fractions.
+- Improve builder (rewrite in TypeScript).
+- Improve packaging automation.
 
 ### v0.2.6 (2022-05-26)
 

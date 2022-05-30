@@ -1,9 +1,6 @@
-/*
- * decimal.js-i18n v0.2.6
- * Full internationalization support for decimal.js.
- * MIT License
- * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
- * https://github.com/pjbatista/decimal.js-i18n
+/*!
+ * Copyright (c) 2022 Pedro José Batista, licensed under the MIT License.
+ * See the LICENSE.md file in the project root for more information.
  */
 
 /** Formats of compact display available. Takes either "`short`" (default) or "`long`" */

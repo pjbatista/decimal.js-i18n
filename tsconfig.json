@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "allowJs": false,
+        "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "declaration": true,
+        "downlevelIteration": true,
         "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -20,6 +21,7 @@
         "noImplicitOverride": true,
         "paths": { "@/*": ["./src/*"], "./*": ["./tests/*"] },
         "preserveConstEnums": true,
+        "resolveJsonModule": true,
         "skipLibCheck": false,
         "sourceMap": true,
         "strict": true,

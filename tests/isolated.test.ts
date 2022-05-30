@@ -1,12 +1,9 @@
-/*
- * decimal.js-i18n v0.2.6
- * Full internationalization support for decimal.js.
- * MIT License
- * Copyright (c) 2022 Pedro José Batista <pedrobatista@myself.com>
- * https://github.com/pjbatista/decimal.js-i18n
+/*!
+ * Copyright (c) 2022 Pedro José Batista, licensed under the MIT License.
+ * See the LICENSE.md file in the project root for more information.
  */
-import extend from "@/extend";
-import { basicNumbers, constants, getDecimalClone, Format, toString, toStringTag } from "./helpers";
+import extend from "@/extend.cjs";
+import { toString, toStringTag } from "./helpers";
 import { expect, use } from "chai";
 import Decimal from "decimal.js";
 import "mocha";
@@ -22,12 +19,12 @@ describe("Sub-module `extend` (non-automatic activation)", () => {
     });
 
     it("extends a valid constructor", () => {
-        extend(Decimal);
-        expect(Decimal.Format).to.be.a("function");
-        expect(toString(new Decimal.Format())).to.equal(toStringTag);
-        expect(new Decimal("1e9").toLocaleString("en-US")).to.equal("1,000,000,000");
-        expect(new Decimal("1e9").toLocaleString("en-US", { minimumFractionDigits: 30 })).to.equal("1,000,000,000.000000000000000000000000000000");
-        expect(new Decimal("1e9").toLocaleString("en-US", { style: "percent" })).to.equal("100,000,000,000%");
-        expect(new Decimal("1e9").toLocaleString("en-US", { minimumIntegerDigits: 30, style: "percent" })).to.equal("000,000,000,000,000,000,100,000,000,000%");
+        const Dec = extend(Decimal);
+        expect(Dec.Format).to.be.a("function");
+        expect(toString(new Dec.Format())).to.equal(toStringTag);
+        expect(new Dec("1e9").toLocaleString("en-US")).to.equal("1,000,000,000");
+        expect(new Dec("1e9").toLocaleString("en-US", { minimumFractionDigits: 30 })).to.equal("1,000,000,000.000000000000000000000000000000");
+        expect(new Dec("1e9").toLocaleString("en-US", { style: "percent" })).to.equal("100,000,000,000%");
+        expect(new Dec("1e9").toLocaleString("en-US", { minimumIntegerDigits: 30, style: "percent" })).to.equal("000,000,000,000,000,000,100,000,000,000%");
     });
 });
