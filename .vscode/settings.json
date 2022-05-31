@@ -39,15 +39,4 @@
     },
 
     // #endregion
-
-    // =============================================================================================
-    // #region Window color
-
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#546440",
-        "titleBar.activeBackground": "#546440",
-        "titleBar.activeForeground": "#FEFBFB"
-    },
-
-    // #endregion
 }
