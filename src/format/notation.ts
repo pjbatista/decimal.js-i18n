@@ -11,5 +11,5 @@
  * - "`engineering`" return the exponent of ten when divisible by three;
  * - "`compact`" string representing exponent; defaults to using the "short" form.
  */
-export type FormatNotation = "standard" | "scientific" | "engineering" | "compact";
-export default FormatNotation;
+export type Notation = "standard" | "scientific" | "engineering" | "compact";
+export default Notation;

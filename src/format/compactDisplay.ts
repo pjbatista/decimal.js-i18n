@@ -4,5 +4,5 @@
  */
 
 /** Formats of compact display available. Takes either "`short`" (default) or "`long`" */
-export type FormatCompactDisplay = "short" | "long";
-export default FormatCompactDisplay;
+export type CompactDisplay= "short" | "long";
+export default CompactDisplay;

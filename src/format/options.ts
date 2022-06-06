@@ -4,10 +4,10 @@
  */
 import type BaseFormatOptions from "./baseOptions";
 import { DECIMAL_LIMIT, DEFAULT_OPTIONS, ECMA_LIMIT } from "./constants";
-import type FormatLocaleMatcher from "./localeMatcher";
-import FormatNotation from "./notation";
-import type ResolvedFormatOptions from "./resolvedFormatOptions";
-import FormatStyle from "./style";
+import type LocaleMatcher from "./localeMatcher";
+import type Notation from "./notation";
+import type ResolvedFormatOptions from "./resolvedOptions";
+import type Style from "./style";
 
 type DigitsProperty =
     | "maximumFractionDigits"
@@ -47,17 +47,19 @@ export const extend = <T extends FormatOptions | Intl.NumberFormatOptions>(optio
  * If the user wants 999999999 fraction digits, they can have it (though it would be larger than 2GBs and take
  * quite a while to calculate at in an average PC).
  *
+ * @template N Numeric notation of formatting.
+ * @template S Numeric style of formatting.
  * @param options Decimal format options to be merged with the ECMA resolved options.
  * @param ecma Object resulting from `Intl.NumberFormat.resolvedOptions()`.
  * @returns A resolved decimal format options.
  */
-export const resolve = <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
-    options: FormatOptions<TNotation, TStyle>,
+export const resolve = <N extends Notation = "standard", S extends Style = "decimal">(
+    options: FormatOptions<N, S>,
     ecma: Intl.ResolvedNumberFormatOptions,
 ) => {
     const result = { ...ecma } as ResolvedFormatOptions<
-        typeof ecma.notation extends FormatNotation ? typeof ecma.notation : TNotation,
-        typeof ecma.style extends FormatStyle ? typeof ecma.style : TStyle
+        typeof ecma.notation extends Notation ? typeof ecma.notation : N,
+        typeof ecma.style extends Style ? typeof ecma.style : S
     >;
 
     forEachDigitsProperty(property => {
@@ -66,7 +68,7 @@ export const resolve = <TNotation extends FormatNotation = "standard", TStyle ex
         }
 
         // Gets the maximum in between both objects and the defaults
-        result[property] = Math.max(options[property] ?? 0, result[property] ?? 0, DEFAULT_OPTIONS[property]);
+        result[property] = Math.max(ecma[property] ?? 0, options[property] ?? DEFAULT_OPTIONS[property]);
     });
 
     // Parsed from group 1?
@@ -94,7 +96,7 @@ export const resolve = <TNotation extends FormatNotation = "standard", TStyle ex
  * @param options Decimal format options used as a baseline for the new object.
  * @returns A new `Intl.NumberFormatOptions` object.
  */
-export const toEcma = <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
+export const toEcma = <TNotation extends Notation = "standard", TStyle extends Style = "decimal">(
     options: FormatOptions<TNotation, TStyle>,
 ) => {
     const result = { ...options };
@@ -114,13 +116,13 @@ export const toEcma = <TNotation extends FormatNotation = "standard", TStyle ext
  *
  * It specially checks if the digits properties are within `decimal.js`' range, which is 1e9±1.
  *
- * @template TNotation Numeric notation of formatting.
- * @template TStyle Numeric style of formatting.
+ * @template N Numeric notation of formatting.
+ * @template S Numeric style of formatting.
  * @param options Decimal format options to be validated.
  * @returns `true` if all properties are valid. Otherwise, an array with the invalid properties names.
  */
-export const validate = <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
-    options: FormatOptions<TNotation, TStyle>,
+export const validate = <N extends Notation = "standard", S extends Style = "decimal">(
+    options: FormatOptions<N, S>,
 ) => {
     const result = forEachDigitsProperty((property, factor) => {
         if (property in options && Number(options[property]) > DECIMAL_LIMIT + factor) {
@@ -144,17 +146,17 @@ export const validate = <TNotation extends FormatNotation = "standard", TStyle e
  *
  * If at least one property from the second group is defined, then the first group is ignored.
  *
- * @template TNotation Numeric notation of formatting.
- * @template TStyle Numeric style of formatting.
+ * @template N Numeric notation of formatting.
+ * @template S Numeric style of formatting.
  */
-export interface FormatOptions<TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">
-    extends Partial<BaseFormatOptions<TNotation, TStyle>> {
+export interface FormatOptions<N extends Notation = "standard", S extends Style = "decimal">
+    extends Partial<BaseFormatOptions<N, S>> {
     /**
      * The locale matching algorithm to use. Possible values are "`lookup`" and "`best fit`"; the default is
      * "`best fit`". For information about this option, see the [Intl page on
      * MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
      */
-    localeMatcher?: FormatLocaleMatcher | undefined;
+    localeMatcher?: LocaleMatcher | undefined;
 }
 
 export default FormatOptions;

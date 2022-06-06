@@ -12,7 +12,7 @@
  * [1]: https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-issanctionedsimpleunitidentifier
  */
 /* eslint-enable max-len */
-export type FormatUnit =
+export type Unit =
     | "acre"
     | "bit"
     | "byte"
@@ -60,4 +60,4 @@ export type FormatUnit =
 
 // eslint-disable-next-line
 type UnitString = string & {};
-export default FormatUnit;
+export default Unit;

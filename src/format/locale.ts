@@ -8,7 +8,7 @@
  * the locales argument, see the
  * [Intl page on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
  */
-export type FormatLocale =
+export type Locale =
     | "af-ZA"
     | "am-ET"
     | "ar-AE"
@@ -241,4 +241,4 @@ export type FormatLocale =
 
 // eslint-disable-next-line
 type LocaleString = string & {};
-export default FormatLocale;
+export default Locale;

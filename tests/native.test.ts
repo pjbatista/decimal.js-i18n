@@ -15,33 +15,7 @@ describe("Localization test (comparing results to native)", () => {
             const decFormat = new Format(locale);
             const numFormat = new Intl.NumberFormat(locale);
             for (const number of basicNumbers) {
-                expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
-            }
-        });
-
-        it(`locale=${locale ?? "undefined"}, all notations and styles, should match native`, () => {
-            let decFormat = new Format<any, any>(locale, { notation: "compact" });
-            let numFormat = new Intl.NumberFormat(locale, { notation: "compact" });
-            for (const number of basicNumbers) {
-                expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
-            }
-
-            decFormat = new Format(locale, { notation: "engineering" });
-            numFormat = new Intl.NumberFormat(locale, { notation: "engineering" });
-            for (const number of basicNumbers) {
-                expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
-            }
-
-            decFormat = new Format(locale, { notation: "scientific" });
-            numFormat = new Intl.NumberFormat(locale, { notation: "scientific" });
-            for (const number of basicNumbers) {
-                expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
-            }
-
-            decFormat = new Format(locale, { style: "percent" });
-            numFormat = new Intl.NumberFormat(locale, { style: "percent" });
-            for (const number of basicNumbers) {
-                expect(decFormat.formatToParts(number)).to.deep.equal(numFormat.formatToParts(Number(number)));
+                expect(decFormat.format(number)).to.match(new RegExp("^" + numFormat.format(Number(number))));
             }
         });
     }

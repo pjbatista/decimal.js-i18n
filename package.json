@@ -1,20 +1,23 @@
 {
     "name": "decimal.js-i18n-dev",
     "description": "Full internationalization support for decimal.js.",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "private": true,
     "keywords": [
         "number",
         "decimal",
         "decimal.js",
         "decimal.js extension",
-        "decimal.js plugin",
+        "decimal.js format",
         "extension",
-        "integer",
         "float",
+        "format",
+        "formatter",
+        "integer",
         "localization",
         "localize",
         "locale",
+        "i10n",
         "i18n",
         "intl",
         "internationalization",
@@ -36,7 +39,7 @@
         "coverage": "run-s coverage:test coverage:report",
         "coverage:report": "nyc report -r clover",
         "coverage:test": "nyc mocha --exit -r ts-node/register -r tsconfig-paths/register --ignore tests/randomized.test.ts tests/**/*.test.ts",
-        "test": "mocha --bail -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts"
+        "test": "mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts"
     },
     "engines": {
         "node": ">=16"

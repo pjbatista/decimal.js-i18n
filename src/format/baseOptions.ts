@@ -3,31 +3,28 @@
  * See the LICENSE.md file in the project root for more information.
  */
 import type Decimal from "decimal.js";
-import type FormatCompactDisplay from "./compactDisplay";
-import type FormatCurrency from "./currency";
-import type FormatCurrencyDisplay from "./currencyDisplay";
-import type FormatCurrencySign from "./currencySign";
-import type FormatNotation from "./notation";
-import type FormatNumberingSystem from "./numberingSystem";
-import type FormatSignDisplay from "./signDisplay";
-import type FormatStyle from "./style";
-import type FormatTrailingZeroDisplay from "./trailingZeroDisplay";
-import type FormatUnit from "./unit";
-import type FormatUnitDisplay from "./unitDisplay";
-import type FormatUseGrouping from "./useGrouping";
+import type CompactDisplay from "./compactDisplay";
+import type Currency from "./currency";
+import type CurrencyDisplay from "./currencyDisplay";
+import type CurrencySign from "./currencySign";
+import type Notation from "./notation";
+import type NumberingSystem from "./numberingSystem";
+import type SignDisplay from "./signDisplay";
+import type Style from "./style";
+import type TrailingZeroDisplay from "./trailingZeroDisplay";
+import type Unit from "./unit";
+import type UnitDisplay from "./unitDisplay";
+import type UseGrouping from "./useGrouping";
 
 /**
  * Base type of object used to configure {@link Decimal.Format} formatters.
  *
- * @template TNotation Numeric notation of formatting.
- * @template TStyle Numeric style of formatting.
+ * @template N Numeric notation of formatting.
+ * @template S Numeric style of formatting.
  */
-export interface BaseFormatOptions<
-    TNotation extends FormatNotation = "standard",
-    TStyle extends FormatStyle = "decimal",
-> {
+export interface BaseFormatOptions<N extends Notation = "standard", S extends Style = "decimal"> {
     /** Only used when {@link notation `notation`} is "`compact`". */
-    compactDisplay: FormatCompactDisplay;
+    compactDisplay: CompactDisplay;
 
     /**
      * The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as
@@ -35,17 +32,17 @@ export interface BaseFormatOptions<
      * currency & funds code list](https://iso.org/iso-4217-currency-codes.html). There is no default value; if
      * the {@link style} is "`currency`", the `currency` property must be provided.
      */
-    currency: FormatCurrency;
+    currency: S extends "currency" ? Currency : undefined;
 
     /** How to display the {@link currency `currency`} in currency formatting. The default is "`symbol`". */
-    currencyDisplay: FormatCurrencyDisplay;
+    currencyDisplay: CurrencyDisplay;
 
     /**
      * In many locales, accounting format means to wrap the number with parentheses instead of appending a
      * minus sign. You can enable this formatting by setting the currencySign option to "`accounting`". The
      * default value is "`standard`".
      */
-    currencySign: FormatCurrencySign;
+    currencySign: CurrencySign;
 
     /**
      * The maximum number of fraction digits to use. This allows any positive integer value up to `999999999`,
@@ -86,7 +83,7 @@ export interface BaseFormatOptions<
     minimumSignificantDigits: number;
 
     /** The formatting that should be displayed for the number, the defaults is "`standard`". */
-    notation: TNotation;
+    notation: N;
 
     /**
      * A numeral system is a system for expressing numbers. The numberingSystem property helps to represent the
@@ -94,7 +91,7 @@ export interface BaseFormatOptions<
      *
      * See [the MDN page](https://mdn.io/Intl.Locale.prototype.numberingSystem) for more information.
      */
-    numberingSystem: FormatNumberingSystem;
+    numberingSystem: NumberingSystem;
 
     /**
      * Options for rounding modes reflecting the [ICU user guide][1]. Used in this plugin as in
@@ -105,30 +102,30 @@ export interface BaseFormatOptions<
     rounding: Decimal.Rounding;
 
     /** When to display the sign for the number; defaults to "`auto`". */
-    signDisplay: FormatSignDisplay;
+    signDisplay: SignDisplay;
 
     /** The formatting style to use. The default is "`decimal`". */
-    style: TStyle;
+    style: S;
 
     /**
      * The unit to use in unit formatting, possible values are core unit identifiers. There is no default
      * value; if the {@link style} is "`unit`", the `unit` property must be provided.
      */
-    unit: FormatUnit;
+    unit: S extends "unit" ? Unit : undefined;
 
     /**
      * The unit formatting style to use in {@link unit} formatting, the defaults is "`short`". Can be "`long`",
      * "`narrow`" or "`short`".
      */
-    unitDisplay: FormatUnitDisplay;
+    unitDisplay: UnitDisplay;
 
     /**
      * Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. The
      * default is "`auto`".
      */
-    useGrouping: FormatUseGrouping;
+    useGrouping: UseGrouping;
 
     /** A string expressing the strategy for displaying trailing zeros on whole numbers. The default is "`auto`". */
-    trailingZeroDisplay: FormatTrailingZeroDisplay;
+    trailingZeroDisplay: TrailingZeroDisplay;
 }
 export default BaseFormatOptions;

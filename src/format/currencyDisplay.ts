@@ -11,5 +11,5 @@
  * - "`code`" to use the ISO currency code;
  * - "`name`" to use a localized currency name such as "dollar".
  */
-export type FormatCurrencyDisplay = "symbol" | "narrowSymbol" | "code" | "name";
-export default FormatCurrencyDisplay;
+export type CurrencyDisplay= "symbol" | "narrowSymbol" | "code" | "name";
+export default CurrencyDisplay

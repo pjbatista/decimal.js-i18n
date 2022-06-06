@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/naming-convention,@typescript-eslint/no-unsafe-argument */
 import Decimal from "decimal.js";
 import Format from "./format";
-import type { FormatLocale, FormatOptions, FormatNotation, FormatStyle } from "./format";
+import type { Locale, FormatOptions, Notation, Style } from "./format";
 
 const main = (Decimal: Decimal.Constructor) => {
     // Do not attempt to redefine the module, if already extended
@@ -28,8 +28,8 @@ declare module "decimal.js" {
         /**
          * Returns a string with a language-sensitive representation of this decimal number.
          *
-         * @template TNotation Numeric notation of formatting.
-         * @template TStyle Numeric style of formatting.
+         * @template N Numeric notation of formatting.
+         * @template S Numeric style of formatting.
          * @param locales A string with a [BCP 47](https://www.rfc-editor.org/info/bcp47) language tag, or an
          *   array of such strings.
          *
@@ -38,9 +38,9 @@ declare module "decimal.js" {
          * @param options Object used to configure the behavior of the string localization.
          * @returns A localized and formatted string.
          */
-        toLocaleString: <TNotation extends FormatNotation = "standard", TStyle extends FormatStyle = "decimal">(
-            locales?: FormatLocale | FormatLocale[],
-            options?: FormatOptions<TNotation, TStyle>,
+        toLocaleString: <N extends Notation = "standard", S extends Style = "decimal">(
+            locales?: Locale | Locale[],
+            options?: FormatOptions<N, S>,
         ) => string;
     }
 

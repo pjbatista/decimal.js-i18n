@@ -4,9 +4,9 @@
  */
 
 /**
- * In many locales, accounting format means to wrap the number with parentheses instead of appending a
- * minus sign. You can enable this formatting by setting the currencySign option to "`accounting`". The
- * default value is "`standard`".
+ * In many locales, accounting format means to wrap the number with parentheses instead of appending a minus
+ * sign. You can enable this formatting by setting the currencySign option to "`accounting`". The default value
+ * is "`standard`".
  */
-export type FormatCurrencySign = "standard" | "accounting";
-export default FormatCurrencySign;
+export type CurrencySign = "standard" | "accounting";
+export default CurrencySign;

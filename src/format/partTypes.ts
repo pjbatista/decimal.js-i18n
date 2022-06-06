@@ -2,9 +2,8 @@
  * Copyright (c) 2022 Pedro José Batista, licensed under the MIT License.
  * See the LICENSE.md file in the project root for more information.
  */
-import type Format from ".";
 
-/** Strings describing the type of parts available as result of {@link Format.formatToParts}. */
+/** Strings describing the type of parts available as result of `Format.formatToParts`. */
 export type FormatPartTypes =
     | "literal"
     | "nan"

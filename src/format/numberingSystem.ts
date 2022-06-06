@@ -9,7 +9,7 @@
  *
  * See the [numberingSystem](https://mdn.io/Intl.Locale.prototype.numberingSystem) page for more information.
  */
-export type FormatNumberingSystem =
+export type NumberingSystem =
     | "adlm"
     | "ahom"
     | "arab"
@@ -100,4 +100,4 @@ export type FormatNumberingSystem =
 
 // eslint-disable-next-line
 type NumberingSystemString = string & {};
-export default FormatNumberingSystem;
+export default NumberingSystem;

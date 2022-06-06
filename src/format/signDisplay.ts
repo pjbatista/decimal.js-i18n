@@ -12,5 +12,5 @@
  * - "`negative`" sign display for negative numbers only, excluding negative zero;
  * - "`never`" never display sign.
  */
-export type FormatSignDisplay = "auto" | "never" | "always" | "exceptZero" | "negative";
-export default FormatSignDisplay;
+export type SignDisplay = "auto" | "never" | "always" | "exceptZero" | "negative";
+export default SignDisplay;

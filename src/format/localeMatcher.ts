@@ -4,5 +4,5 @@
  */
 
 /** String that describes the approach taken by the formatters in order to achieve a target locale. */
-export type FormatLocaleMatcher = "best fit" | "lookup";
-export default FormatLocaleMatcher;
+export type LocaleMatcher = "best fit" | "lookup";
+export default LocaleMatcher;

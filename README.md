@@ -113,22 +113,26 @@ formatter.format(-1 / 3);
 // Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐໐
 
 formatter.format(new Decimal(-1).div(3));
-// Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
+// Returns: US$-໐,໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓໓
 
 formatter.format(new Decimal("1.65e51").div(3).cbrt());
-// Returns US$໘໑.໙໓໒.໑໒໗.໐໖໐.໐໖໔.໕໘໐,໐໙໓໗໙໕໐໗໑໒໘໖໒໘໕໗໙໙໗໓໓໓໙໑໐໓໓໘໗໐໔໕໔
+// Returns US$໘໑.໙໓໒.໑໒໗.໐໖໐.໐໖໔.໕໘໐,໙໓໗໙໕໐໗໑໒໘໖໒໘໕໗໙໙໗໓໓໓໙໑໐໓໓໘໗໐໔໕໓໗໑໓໑໓໒໘໙໒໑໕໑໓໐໗໕໒໘໒໗໔໓໖໕໒໒໓໓໘໖໑໔໗໐໓໔໙໙໖໘໓໙໓໖໑໔໒໕໑໒໖
 ```
 
 Formatting to descriptive parts is also fully implemented:
 
 ```javascript
 formatter.formatToParts(Decimal.acos(-1));
-// Returns: [
-//  { type: 'currency', value: 'US$' },
-//  { type: 'integer', value: '໓' },
-//  { type: 'decimal', value: ',' },
-//  { type: 'fraction', value: '໐໑໔໑໕໙໒໖໕໓໕໘໙໗໙໓໒໓໘໔໖໒໖໔໓໓໘໓໒໗໙໕໐' },
+// Result: [
+//   { type: 'currency', value: 'US$' },
+//   { type: 'integer', value: '໓' },
+//   { type: 'decimal', value: ',' },
+//   {
+//     type: 'fraction',
+//     value: '໑໔໑໕໙໒໖໕໓໕໘໙໗໙໓໒໓໘໔໖໒໖໔໓໓໘໓໒໗໙໕໐໒໘໘໔໑໙໗໑໖໙໓໙໙໓໗໕໑໐໕໘໒໐໙໗໔໙໔໔໕໙໒໓໐໗໘໑໖໔໐໖໒໘໖໒໐໘໙໙໘໖໒໘໐໓໔໘໒໕໓໔໒໑໑໗໐໖໘'
+//   }
 // ]
+
 ```
 
 [<sub>⇧ back to top</sub>](#summary)
@@ -315,6 +319,15 @@ Whether to use grouping separators, such as thousands separators or thousand/lak
 [<sub>⇧ back to top</sub>](#summary)
 
 ## Changelog
+
+### v0.3.1 (2022-06-05)
+
+Fix fraction output for all locales
+
+- Recreate fraction output with better algorithm.
+- Improve export naming.
+- Improve testing according to fraction fixes.
+- Improve testing speed.
 
 ### v0.3.0 (2022-05-30)
 

@@ -3,9 +3,9 @@
  * See the LICENSE.md file in the project root for more information.
  */
 import Decimal from "decimal.js";
-import type FormatCurrency from "./currency";
-import type FormatLocale from "./locale";
-import type FormatNumberingSystem from "./numberingSystem";
+import type Currency from "./currency";
+import type Locale from "./locale";
+import type NumberingSystem from "./numberingSystem";
 
 /** Format extension used to create large integers with user-defined grouping. */
 export const BIGINT_MODIFIERS = {
@@ -38,21 +38,21 @@ export const DEFAULT_OPTIONS = {
     compactDisplay: "short",
     currencyDisplay: "symbol",
     currencySign: "standard",
-    maximumFractionDigits: 3,
+    maximumFractionDigits: 499,
     minimumFractionDigits: 0,
     minimumIntegerDigits: 1,
-    maximumSignificantDigits: 21,
+    maximumSignificantDigits: 500,
     minimumSignificantDigits: 1,
     notation: "standard",
-    rounding: Decimal.ROUND_HALF_EVEN,
+    rounding: Decimal.ROUND_HALF_UP,
     signDisplay: "auto",
     style: "decimal",
     unitDisplay: "short",
     trailingZeroDisplay: "auto",
 } as const;
 
-/** A big list of {@link FormatCurrency currencies}, containing most of the standard currencies of the world. */
-export const CURRENCIES: ReadonlyArray<FormatCurrency> = [
+/** A big list of {@link Currency currencies}, containing most of the standard currencies of the world. */
+export const CURRENCIES: ReadonlyArray<Currency> = [
     "AED",
     "AFN",
     "ALL",
@@ -213,8 +213,8 @@ export const CURRENCIES: ReadonlyArray<FormatCurrency> = [
     "ZWD",
 ] as const;
 
-/** A big list of BCP 47 {@link FormatLocale locales}, used for the new method `Decimal.Format.supportedLocales` */
-export const LOCALES: ReadonlyArray<FormatLocale> = [
+/** A big list of BCP 47 {@link Locale locales}, used for the new method `Decimal.Format.supportedLocales` */
+export const LOCALES: ReadonlyArray<Locale> = [
     "af-ZA",
     "am-ET",
     "ar-AE",
@@ -445,8 +445,8 @@ export const LOCALES: ReadonlyArray<FormatLocale> = [
     "zu-ZA",
 ] as const;
 
-/** A big list of {@link FormatNumberingSystem numbering systems} representing multiple regions of the world. */
-export const NUMBERING_SYSTEMS: ReadonlyArray<FormatNumberingSystem> = [
+/** A big list of {@link NumberingSystem numbering systems} representing multiple regions of the world. */
+export const NUMBERING_SYSTEMS: ReadonlyArray<NumberingSystem> = [
     "adlm",
     "ahom",
     "arab",
@@ -536,4 +536,4 @@ export const NUMBERING_SYSTEMS: ReadonlyArray<FormatNumberingSystem> = [
 ] as const;
 
 /** Array containing the supported locales of the current environment. */
-export const SUPPORTED_LOCALES: FormatLocale[] = Intl.NumberFormat.supportedLocalesOf(LOCALES as string[]);
+export const SUPPORTED_LOCALES: Locale[] = Intl.NumberFormat.supportedLocalesOf(LOCALES as string[]);

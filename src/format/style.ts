@@ -11,5 +11,5 @@
  * - "`percent`" for percent formatting;
  * - "`unit`" for unit formatting.
  */
-export type FormatStyle = "decimal" | "currency" | "percent" | "unit";
-export default FormatStyle;
+export type Style = "decimal" | "currency" | "percent" | "unit";
+export default Style;

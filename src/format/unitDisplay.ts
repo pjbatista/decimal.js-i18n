@@ -7,5 +7,5 @@
  * The unit formatting style to use in {@link unit} formatting, the defaults is "`short`". Can be "`long`",
  * "`narrow`" or "`short`".
  */
-export type FormatUnitDisplay = "long" | "narrow" | "short";
-export default FormatUnitDisplay;
+export type UnitDisplay = "long" | "narrow" | "short";
+export default UnitDisplay;

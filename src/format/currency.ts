@@ -10,7 +10,7 @@
  * code list](https://iso.org/iso-4217-currency-codes.html).
  */
 /* eslint-enable max-len */
-export type FormatCurrency =
+export type Currency =
     | "AED"
     | "AFN"
     | "ALL"
@@ -173,4 +173,4 @@ export type FormatCurrency =
 
 // eslint-disable-next-line
 type CurrencyString = string & {};
-export default FormatCurrency;
+export default Currency;

@@ -12,5 +12,5 @@
  * - "`min2`": display grouping separators when there are at least 2 digits in a group;
  * - "`true`"/`true`: alias for always.
  */
-export type FormatUseGrouping = boolean | "always" | "auto" | "false" | "min2" | "true";
-export default FormatUseGrouping;
+export type UseGrouping = boolean | "always" | "auto" | "false" | "min2" | "true";
+export default UseGrouping;

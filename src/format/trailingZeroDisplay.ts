@@ -10,5 +10,5 @@
  * - "`stripIfInteger`": the result with more precision wins a conflict;
  * - "`lessPrecision`": same as "auto", but remove the fraction digits if they are all zero.
  */
-export type FormatTrailingZeroDisplay = "auto" | "stripIfInteger" | "lessPrecision";
-export default FormatTrailingZeroDisplay;
+export type TrailingZeroDisplay = "auto" | "stripIfInteger" | "lessPrecision";
+export default TrailingZeroDisplay;
