@@ -66,7 +66,7 @@ const { Decimal } = require("decimal.js-i18n");
 **AMD (RequireJS):**
 
 ```javascript
-require(["decimal.js"], Decimal => { /* ... */ });
+require(["decimal.js-i18n"], Decimal => { /* ... */ });
 ```
 
 **Browsers:**
@@ -85,7 +85,7 @@ const Decimal = extend(require("custom-decimal.js"));
 
 ---
 
-From now on, the method `toLocaleString` will be available on the `Decimal` prototype:
+From now on, the method `toLocaleString` will be available on the `Decimal` prototype. It accepts ALL locales available to :
 
 ```javascript
 pi.toLocaleString('ar', { 
