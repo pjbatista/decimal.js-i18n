@@ -60,7 +60,7 @@ import Decimal from "decimal.js-i18n";
 **Node (CommonJS):**
 
 ```javascript
-const Decimal = require("decimal.js-i18n");
+const { Decimal } = require("decimal.js-i18n");
 ```
 
 **AMD (RequireJS):**
