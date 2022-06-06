@@ -85,7 +85,7 @@ const Decimal = extend(require("custom-decimal.js"));
 
 ---
 
-From now on, the method `toLocaleString` will be available on the `Decimal` prototype. It accepts ALL locales available to :
+From now on, the method `toLocaleString` will be available on the `Decimal` prototype. It accepts ALL locales available to `Intl`:
 
 ```javascript
 pi.toLocaleString('ar', { 
